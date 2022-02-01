@@ -1,4 +1,9 @@
-import controller.ServerController;
+import controller.Controller;
+import controller.JsonController;
+import controller.JsonObjectController;
+import controller.LoggedController;
+import model.Board;
+import model.User;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -6,6 +11,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.regex.Matcher;
 
 public class Server {
     private static Server instance = null;
@@ -63,14 +69,21 @@ public class Server {
     }
 
     private String recognizeCommand(String input) {
-        ServerController serverController = ServerController.getInstance();
         String[] parts = input.split(" ");
-        if (input.startsWith("serial ")) {
-            return serverController.draw(parts[1]);
-        } else if (input.startsWith("set number ")) {
-            return serverController.changeN(parts[2]);
-        } else if (input.equals("list")) {
-            return serverController.getWinners();
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("user create --username ([^ ]+) --password1 ([^ ]+) --password2 ([^ ]+) --email Address ([^ ]+)$"
+                        , input)).matches()) {
+            int response = Controller.controller.register(matcher.group(1),matcher.group(2),matcher.group(3),matcher.group(4));
+            return Integer.toString(response);
+        } else if (input.equals("get LoggedUser")) {
+            JsonObjectController<User> jsonObjectController = new JsonObjectController<User>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(Thread.currentThread()).getLoggedInUser());
+        } else if (input.equals("get LoggedBoard")) {
+            JsonObjectController<Board> jsonObjectController = new JsonObjectController<Board>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(Thread.currentThread()).getSelectedBoard());
         }
         // this means the command is not meaningful
         return "";
