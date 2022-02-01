@@ -1,0 +1,33 @@
+.root {
+    -fx-background-color: #949292;
+}
+.table-view{
+    -fx-background-color: yellow;
+}
+.table-view .column-header {
+    -fx-background-color: yellow;
+    -fx-fill: black;
+}
+.table-view .column-header-background .label{
+    -fx-text-fill: black;
+}
+.table-view .column {
+    -fx-border-color: white;
+}
+.table-view .table-cell{
+    -fx-text-fill: black;
+    -fx-text-alignment: center;
+    -fx-background-color: #f5f5bc;
+}
+.button{
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #e51313;
+    -fx-text-alignment: center;
+    -fx-position-shape: relative;
+}
+.button:pressed{
+    -fx-translate-y: +2;
+}
+.button:hover{
+    -fx-background-color: #fffd63;
+}

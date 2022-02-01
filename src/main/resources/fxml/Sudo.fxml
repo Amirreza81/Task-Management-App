@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="view.SudoView">
+    <children>
+        <AnchorPane prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #949292;"
+                    AnchorPane.bottomAnchor="360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
+            <children>
+                <Label layoutX="21.0" layoutY="11.0" text="Sudo Task"/>
+                <ImageView fx:id="exit" fitHeight="28.0" fitWidth="31.0" layoutX="573.0" layoutY="4.0"
+                           onMouseClicked="#exit" pickOnBounds="true" preserveRatio="true"
+                           AnchorPane.rightAnchor="10.0">
+                    <image>
+                        <Image url="@../img/close_window_96px.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutY="40.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="360.0" prefWidth="100.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="40.0">
+            <children>
+                <VBox alignment="TOP_CENTER" layoutY="-1.0" prefHeight="248.0" prefWidth="100.0" spacing="9.0"
+                      style="-fx-background-color: #C8C5C4;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="Create Team">
+                            <VBox.margin>
+                                <Insets top="7.0"/>
+                            </VBox.margin>
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                        </Button>
+                        <Button fx:id="showTeams" mnemonicParsing="false" onAction="#goToShowTeams" prefHeight="50.0"
+                                prefWidth="80.0" text="Show Teams">
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="Show Team">
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                        </Button>
+                        <Button fx:id="leave" mnemonicParsing="false" onAction="#leave" prefHeight="50.0"
+                                prefWidth="80.0" text="leave">
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="98.0" layoutY="40.0" prefHeight="362.0" prefWidth="502.0"
+                    style="-fx-background-color: #E7E2E1;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="110.0"
+                    AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+            <children>
+                <ScrollPane prefHeight="340.0" prefWidth="480.0">
+                    <content>
+                        <VBox fx:id="vTaskItem" prefHeight="338.0" prefWidth="478.0"/>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

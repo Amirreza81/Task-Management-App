@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #949292;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LeaderMenuView">
+    <children>
+        <Label alignment="CENTER" layoutX="24.0" layoutY="24.0" prefHeight="62.0" prefWidth="228.0" text="Leader Menu" textFill="#cc0000">
+            <font>
+                <Font name="System Bold" size="23.0" />
+            </font>
+        </Label>
+        <Button fx:id="profileInLeaderMenu" alignment="CENTER" layoutX="138.0" layoutY="102.0" mnemonicParsing="false" onAction="#goToProfile" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Profile" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+        <Button fx:id="teamMenuInLeaderMenu" alignment="CENTER" layoutX="138.0" layoutY="142.0" mnemonicParsing="false" onAction="#goToTeamMenu" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Team Menu" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+        <Button fx:id="taskPageInLeaderMenu" alignment="CENTER" layoutX="138.0" layoutY="182.0" mnemonicParsing="false" onAction="#goToTaskPage" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Task Page" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+        <Button fx:id="calenderInLeaderMenu" alignment="CENTER" layoutX="138.0" layoutY="219.0" mnemonicParsing="false" onAction="#goToCalenderMenu" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Calender" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+        <Button fx:id="logOut" alignment="CENTER" layoutX="138.0" layoutY="298.0" mnemonicParsing="false" onAction="#backToLogInPage" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="LogOut" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+        <Button fx:id="specialCommands" alignment="CENTER" layoutX="138.0" layoutY="259.0" mnemonicParsing="false" onAction="#goToSpecialCommandsForLeader" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Special " textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

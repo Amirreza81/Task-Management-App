@@ -1,0 +1,36 @@
+.root {
+    /*-fx-pref-height: 590.85;*/
+    /*-fx-pref-width: 803.4;*/
+    /*-fx-background-image: url(../pics/backGround.png);*/
+    /*-fx-background-size: cover;*/
+}
+.table-view{
+    -fx-background-color: yellow;
+}
+.table-view .column-header {
+    -fx-background-color: yellow;
+    -fx-fill: black;
+}
+.table-view .column-header-background .label{
+    -fx-text-fill: black;
+}
+.table-view .column {
+    -fx-border-color: white;
+}
+.table-view .table-cell{
+    -fx-text-fill: black;
+    -fx-text-alignment: center;
+    -fx-background-color: #f5f5bc;
+}
+.button{
+    -fx-text-fill: black;
+    -fx-background-color: yellow;
+    -fx-text-alignment: center;
+    -fx-position-shape: relative;
+}
+.button:pressed{
+    -fx-translate-y: +2;
+}
+.button:hover{
+    -fx-background-color: #fffd63;
+}
