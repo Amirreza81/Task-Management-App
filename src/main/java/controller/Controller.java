@@ -169,4 +169,51 @@ public class Controller {
         inputStream.readUTF();
     }
 
+    public int banUser(String userName) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin ban user --user %s --token %s"
+                            ,userName,token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)",result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public int changeRole(String userName, String newRole1) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin change role --user %s --role %s --token %s"
+                            ,userName, newRole1, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)",result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public int showPendingTeams() {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin show --pendingTeams --token %s"
+                            ,userName, newRole1, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)",result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
 }

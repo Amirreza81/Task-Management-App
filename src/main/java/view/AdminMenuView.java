@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -74,10 +74,6 @@ public class AdminMenuView {
         ((Stage) notifications.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void goToScoreBoard(ActionEvent actionEvent) {
-        // go to scoreBoard page
-    }
-
     public void showPendingTeams(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/PendingTeams.fxml"));
         ((Stage) pendingTeams.getScene().getWindow()).setScene(new Scene(root));
@@ -148,7 +144,7 @@ public class AdminMenuView {
             alert.setContentText("You should fill the fields!");
             alert.showAndWait();
         } else {
-            int response = controller.controller.banUser(user.getUserName());
+            int response = Controller.controller.banUser(user.getUserName());
             if (response == 0) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
@@ -171,7 +167,7 @@ public class AdminMenuView {
             alert.showAndWait();
         } else {
             String newRole1 = newRole.getText();
-            int response = controller.controller.changeRole(user.getUserName(), newRole1);
+            int response = Controller.controller.changeRole(user.getUserName(), newRole1);
             if (response == 0) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
@@ -202,7 +198,7 @@ public class AdminMenuView {
     }
 
     public void showListOfPendingTeams(ActionEvent actionEvent) {
-        int response = controller.controller.showPendingTeams();
+        int response = Controller.controller.showPendingTeams();
         if (response == 1){
             listOfPendingTeams.setText("There are no Teams in Pending Status!");
         }
@@ -225,7 +221,7 @@ public class AdminMenuView {
             alert.showAndWait();
             return;
         }
-        int response = controller.controller.acceptTeam(acceptTeams.getText());
+        int response = Controller.controller.acceptTeam(acceptTeams.getText());
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         if (response == 1){
             alert.setTitle("Error");
@@ -245,7 +241,7 @@ public class AdminMenuView {
             alert.showAndWait();
             return;
         }
-        int response = controller.controller.rejectTeam(rejectTeams.getText());
+        int response = Controller.controller.rejectTeam(rejectTeams.getText());
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         if (response == 1){
             alert.setTitle("Error");
@@ -270,17 +266,14 @@ public class AdminMenuView {
             alert.showAndWait();
             return;
         }
-        if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Leader")){
+        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You aren't System Admin and you can't send messages to all!");
             alert.showAndWait();
             return;
         }
-        Notification notification = new Notification(textOfNotification.getText(), LoginView.LoginUser, 0);
-        for (User user : User.getUsers()) {
-            user.getNotifications().add(notification);
-        }
+        Controller.controller.sendNotificationToAll(textOfNotification.getText());
     }
 
     public void sendToTeam(ActionEvent actionEvent) {
@@ -291,19 +284,12 @@ public class AdminMenuView {
             alert.showAndWait();
             return;
         }
-        int response = controller.controller.sendNotificationForTeam(nameOfTeam.getText());
+        int response = Controller.controller.sendNotificationForTeam(nameOfTeam.getText(), textOfNotification.getText());
         if (response == 1){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("There is no team with this name");
             alert.showAndWait();
-            return;
-        }
-        else {
-            Notification notification = new Notification(textOfNotification.getText(), LoginView.LoginUser, 1);
-            for (User user : controller.controller.findTeam(nameOfTeam.getText()).getTeamMembers()) {
-                user.getNotifications().add(notification);
-            }
         }
     }
 
@@ -315,16 +301,12 @@ public class AdminMenuView {
             alert.showAndWait();
             return;
         }
-        int response = controller.controller.sendNotificationForUser(nameOfUser.getText());
+        int response = Controller.controller.sendNotificationForUser(nameOfUser.getText(), textOfNotification.getText());
         if (response == 1){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("There is no team with this name");
             alert.showAndWait();
-        }
-        else {
-            Notification notification = new Notification(textOfNotification.getText(), LoginView.LoginUser, 1);
-            User.getUserByUsername(nameOfUser.getText()).getNotifications().add(notification);
         }
     }
 
