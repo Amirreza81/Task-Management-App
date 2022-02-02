@@ -1,7 +1,6 @@
 package view.BoardMenu;
 
 import controller.Controller;
-import controller.LoggedController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,7 +36,8 @@ public class BoardMenuAddTaskPageView {
 
     private void makeTasksVbox() {
         vTaskItem.getChildren().clear();
-        ArrayList<Task> tasks = Controller.controller.getLoggedBoard().getTeam().getAllTasks();
+        Board board = Controller.controller.getLoggedBoard();
+        ArrayList<Task> tasks = board.getTeam().getAllTasks();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {
             try {
@@ -56,6 +56,7 @@ public class BoardMenuAddTaskPageView {
 
     private void makeCategoriesTable() {
         if(tableView!=null)pane.getChildren().remove(tableView);
+        Board board = Controller.controller.getLoggedBoard();
         ObservableList<Category> list = FXCollections.observableArrayList(board.getAllCategories());
         tableView = new TableView<>();
         tableView.setLayoutX(425);

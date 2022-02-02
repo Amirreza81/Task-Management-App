@@ -13,6 +13,7 @@ import model.Board;
 import model.Task;
 import model.User;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Optional;
@@ -66,7 +67,7 @@ public class BoardMenuReopenBTnVIew implements Initializable {
                     alert.showAndWait();
                     try {
                         parent.makeTasksVbox();
-                    } catch (ParseException e) {
+                    } catch (ParseException | IOException e) {
                         e.printStackTrace();
                     }
                 }

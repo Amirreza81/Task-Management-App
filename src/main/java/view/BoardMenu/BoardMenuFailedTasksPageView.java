@@ -1,6 +1,6 @@
 package view.BoardMenu;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,15 +27,14 @@ public class BoardMenuFailedTasksPageView {
     private User user;
     private Board board;
 
-    public void initialize() throws ParseException {
-        user = LoggedController.getInstance().getLoggedInUser();
-        board = LoggedController.getInstance().getSelectedBoard();
+    public void initialize() throws ParseException, IOException {
         makeTasksVbox();
 
     }
-    public void makeTasksVbox() throws ParseException {
+    public void makeTasksVbox() throws ParseException, IOException {
         vTaskItem.getChildren().clear();
-        controller.controller.updateFailed(board);
+        Board board = Controller.controller.getLoggedBoard();
+        Controller.controller.updateFailed();
         ArrayList<Task> tasks = board.getFailed();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {

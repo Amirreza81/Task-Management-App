@@ -162,4 +162,11 @@ public class Controller {
             return -1;
         }
     }
+
+    public void updateFailed() throws IOException {
+        outputStream.writeUTF("board updateFailed --token "+token);
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
 }
