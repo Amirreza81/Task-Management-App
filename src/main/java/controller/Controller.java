@@ -130,4 +130,36 @@ public class Controller {
         return matcher;
 
     }
+
+    public int changeUserName(String newUsername) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("Profile --change --username %s --token %s"
+                            ,newUsername, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)",result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public int changePassword(User loggedInUser, String oldPassword, String newPassword) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("Profile --change --oldPassword %s --newPassword %s --token %s"
+                            ,oldPassword, newPassword, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)",result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,20 +61,20 @@ public class ProfileView  {
     }
 
     public void backToMenu(ActionEvent actionEvent) throws IOException {
-        if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Member")) {
+        if (Controller.controller.getLoggedInUser().getRole().equals("Member")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MemberMenu.fxml"));
             ((Stage) back.getScene().getWindow()).setScene(new Scene(root));
-        } else if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Leader")) {
+        } else if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) back.getScene().getWindow()).setScene(new Scene(root));
         }
     }
 
     public void updateProfile(ActionEvent actionEvent) {
-        userNameInProfilePage.setText(LoggedController.getInstance().getLoggedInUser().getUserName());
-        emailInProfilePage.setText(LoggedController.getInstance().getLoggedInUser().getEmail());
-        roleInProfilePage.setText(LoggedController.getInstance().getLoggedInUser().getRole());
-        scoreInProfilePage.setText(Integer.toString(LoggedController.getInstance().getLoggedInUser().getScore()));
+        userNameInProfilePage.setText(Controller.controller.getLoggedInUser().getUserName());
+        emailInProfilePage.setText(Controller.controller.getLoggedInUser().getEmail());
+        roleInProfilePage.setText(Controller.controller.getLoggedInUser().getRole());
+        scoreInProfilePage.setText(Integer.toString(Controller.controller.getLoggedInUser().getScore()));
     }
 
     public void showTeams(ActionEvent actionEvent) throws IOException {
@@ -95,7 +95,7 @@ public class ProfileView  {
             alert.showAndWait();
             return;
         }
-        int response = controller.controller.changeUserName(LoggedController.getInstance().getLoggedInUser(), newUsername.getText());
+        int response = Controller.controller.changeUserName(newUsername.getText());
         if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -133,7 +133,7 @@ public class ProfileView  {
             alert.showAndWait();
             return;
         }
-        int response = controller.controller.changePassword(LoggedController.getInstance().getLoggedInUser(), currentPassword.getText(), newPassword.getText());
+        int response = Controller.controller.changePassword(Controller.controller.getLoggedInUser(), currentPassword.getText(), newPassword.getText());
         if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
