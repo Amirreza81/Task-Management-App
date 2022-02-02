@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Task;
 import model.Team;
 
 import java.io.IOException;
@@ -30,14 +28,11 @@ public class ShowTeamsForLeaderView implements Initializable {
     public Button leave;
 
     public void exit(MouseEvent mouseEvent) {
-        LoggedController.getInstance().setSelectedTask(null);
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
 
     public void goCreateTeam(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTask(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/SpecialCommandsForLeader.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -51,7 +46,7 @@ public class ShowTeamsForLeaderView implements Initializable {
         vTeamItem.getChildren().clear();
         ArrayList<Team> teams = new ArrayList<>();
         for (Team team : Team.getAllTeams()) {
-            if (team.getTeamLeader().getUserName().equals(LoggedController.getInstance().getLoggedInUser().getUserName()))
+            if (team.getTeamLeader().getUserName().equals(Controller.controller.getLoggedInUser().getUserName()))
                 teams.add(team);
         }
         Node[] nodes = new Node[teams.size()];

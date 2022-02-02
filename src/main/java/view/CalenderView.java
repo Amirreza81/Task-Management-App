@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,16 +13,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Date;
 import model.Task;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class CalenderView implements Initializable {
     public AnchorPane pane;
@@ -33,7 +28,7 @@ public class CalenderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<Task> tasks = LoggedController.getInstance().getLoggedInUser().getAllTasksForUser();
+        ArrayList<Task> tasks = Controller.controller.getLoggedInUser().getAllTasksForUser();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {
             try {
@@ -50,15 +45,14 @@ public class CalenderView implements Initializable {
     }
 
     public void exit(MouseEvent mouseEvent) {
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
-        if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Leader")) {
+        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
-        } else if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Admin")) {
+        } else if (Controller.controller.getLoggedInUser().getRole().equals("Admin")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
         } else {

@@ -78,13 +78,13 @@ public class Controller {
         }
     }
 
-    public Task getSelectedTeamForTask() {
+    public Team getSelectedTeamForTask() {
         try {
             outputStream.writeUTF("get SelectedTeamForTask --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(Task.class);
-            return (Task) jsonObjectController.createJsonObject(result);
+            return (Team) jsonObjectController.createJsonObject(result);
         } catch (IOException e) {
             return null;
         }
@@ -204,6 +204,7 @@ public class Controller {
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
     }
+
     public String getBoardFailedPercentage() throws IOException {
         outputStream.writeUTF("board BoardFailedPercentage --token " + token);
         outputStream.flush();
@@ -295,7 +296,7 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("admin send --notification %s --all --token %s"
-                            ,notification, token));
+                            , notification, token));
             outputStream.flush();
             String result = inputStream.readUTF();
             Matcher matcher = getCommandMatcher("(\\d)", result);
@@ -335,6 +336,88 @@ public class Controller {
             return Integer.parseInt(response);
         } catch (IOException e) {
             return -1;
+        }
+    }
+
+    public int removeAssignedUsers(String assignedUsers) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task removeAssignedUsers --assignedUsers %s --token %s", assignedUsers, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public void setSelectedTask(String taskTitle) throws IOException {
+        outputStream.writeUTF(String.format
+                ("set setSelectedTask --taskTitle %s --token %s", taskTitle, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int creatTeam(String teamName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("team creatTeam --teamName %s --token %s", teamName, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public int addMember(String memberName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("team addMember --memberName %s --token %s", memberName, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public void setSelectedTeam(Team teamName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("set setSelectedTeam --teamName %s --token %s", teamName, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int deleteMember(String memberName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("team deleteMember --memberName %s --token %s", memberName, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public int suspendMember(String memberName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("team suspendMember --memberName %s --token %s", memberName, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public int creatTask(String taskTitle, String startTime, String deadline, String description, String priority) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task creatTask --taskTitle %s --startTime %s --deadline %s --description %s --priority %s --token %s", taskTitle, startTime, deadline, description, priority, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public int assignMember(String taskId, String username) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task assignMember --taskId %s --username %s --token %s", taskId, username, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public Team getSelectedTeam() {
+        try {
+            outputStream.writeUTF("get SelectedTeam --token " + token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(Team.class);
+            return (Team) jsonObjectController.createJsonObject(result);
+        } catch (IOException e) {
+            return null;
         }
     }
 }

@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +29,11 @@ public class CalenderItemView implements Initializable {
         btnSelect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                LoggedController.getInstance().setSelectedTask(selectTask);
+                try {
+                    Controller.controller.setSelectedTask(selectTask.getTitle());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Parent root = null;
                 try {
                     root = FXMLLoader.load(getClass().getResource("/fxml/TaskPageForCalender.fxml"));

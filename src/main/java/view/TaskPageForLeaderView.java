@@ -1,8 +1,6 @@
 package view;
 
 import controller.Controller;
-import controller.JsonController;
-import controller.LoggedController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -65,7 +63,7 @@ public class TaskPageForLeaderView implements Initializable {
     }
 
     public Task getTask() {
-        return Controller.controller.getSelectedTeamForTask();
+        return Controller.controller.getSelectedTask();
     }
 
     public void Edit(ActionEvent actionEvent) throws ParseException, IOException {
@@ -77,7 +75,7 @@ public class TaskPageForLeaderView implements Initializable {
             Controller.controller.editTaskPriority(PriorityField.getPromptText());
         if (!descriptionField.getText().equals(selectTask.getDescription()))
             Controller.controller.editTaskDescription(descriptionField.getText());
-        if (!deadlineFiled.getText().equals(selectTask.getDeadline()))
+        if (!deadlineFiled.getText().equals(selectTask.getDeadline().toString()))
             result = Controller.controller.editTaskDeadline(taskTitleField.getText());
         if (result == 1) {
             lblError.setText("New deadline is invalid!");
@@ -86,20 +84,18 @@ public class TaskPageForLeaderView implements Initializable {
     }
 
     public void goToCreateTask(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTask(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/CreateTaskPageForLeader.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
     public void exit(MouseEvent mouseEvent) {
-        LoggedController.getInstance().setSelectedTask(null);
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
-    public void deleteMember(ActionEvent actionEvent) {
+    public void deleteMember(ActionEvent actionEvent) throws IOException {
+        Task selectTask = getTask();
         String selectedItem = membersList.getSelectionModel().getSelectedItem().toString();
-        result = controller.controller.removeAssignedUsers(User.getUserByUsername("Amir"), selectTask, User.getUserByUsername(selectedItem));
+        result = Controller.controller.removeAssignedUsers(selectedItem);
         membersList = null;
         for (User user : selectTask.getAssignedUser()) {
             membersList.getItems().add(user.getUserName());
@@ -107,7 +103,6 @@ public class TaskPageForLeaderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTeam(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }

@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Task;
-import model.Team;
 import model.User;
 
 import java.io.IOException;
@@ -37,15 +35,16 @@ public class CreateTaskPageForLeaderView implements Initializable {
     public ImageView exit;
     public Button btnLeave;
     private int result;
+    private Task task;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         priorityChoice.getItems().addAll("Lowest", "Low", "High", "Highest");
         priorityChoice.setValue("Lowest");
-        for (User member : Team.getTeamByName("Yakuza2", Team.getAllTeams()).getTeamMembers()) {
+        for (User member : Controller.controller.getSelectedTeamForTask().getTeamMembers()) {
             members.getItems().add(member.getUserName());
         }
-        members.setValue(Team.getTeamByName("Yakuza2", Team.getAllTeams()).getTeamMembers().get(0).getUserName());
+        members.setValue(Controller.controller.getSelectedTeamForTask().getTeamMembers().get(0).getUserName());
     }
 
     public void goToTaskList(ActionEvent actionEvent) throws IOException {
@@ -54,11 +53,11 @@ public class CreateTaskPageForLeaderView implements Initializable {
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void Create(ActionEvent actionEvent) throws ParseException {
+    public void Create(ActionEvent actionEvent) throws ParseException, IOException {
         if (taskTitleField.getText() == null || priorityChoice.getValue().toString() == null || deadlineFiled.getText() == null)
             lblError.setText("Fill in all the fields");
         else {
-            result = controller.controller.creatTask(LoginView.LoginUser, LoggedController.getInstance().getSelectedTeamForTask(), taskTitleField.getText(), startTimeField.getText(), deadlineFiled.getText(), descriptionField.getText(), priorityChoice.getValue().toString());
+            result = Controller.controller.creatTask(taskTitleField.getText(), startTimeField.getText(), deadlineFiled.getText(), descriptionField.getText(), priorityChoice.getValue().toString());
             if (result == 1) {
                 lblError.setText("There is another task with this title!");
             } else if (result == 2) {
@@ -67,6 +66,7 @@ public class CreateTaskPageForLeaderView implements Initializable {
                 lblError.setText("Invalid deadline!");
             } else if (result == 4) {
                 membersList.getItems().clear();
+                task = Task.getTaskByTitle(Controller.controller.getSelectedTeamForTask().getAllTasks(), taskTitleField.getText());
                 lblError.setText("Task created successfully!");
             }
 
@@ -75,26 +75,22 @@ public class CreateTaskPageForLeaderView implements Initializable {
     }
 
 
-    public void addMember(ActionEvent actionEvent) {
+    public void addMember(ActionEvent actionEvent) throws IOException {
         if (membersList.getItems().contains(members.getValue().toString()))
             lblError.setText("Old added to list!");
         else {
             membersList.getItems().add(members.getValue().toString());
-            result = controller.controller.assignMember(LoginView.LoginUser,
-                    Team.getTeamByName("Yakuza2", Team.getAllTeams()),
-                    String.valueOf(Task.getAllTasks().get(Task.getAllTasks().size() - 1).getCreationId()),
+            result = Controller.controller.assignMember(String.valueOf(task.getCreationId()),
                     members.getValue().toString());
             lblError.setText("User successfully added!");
         }
     }
 
     public void exit(MouseEvent mouseEvent) {
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTeam(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }

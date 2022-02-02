@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,12 +28,10 @@ public class SudoView implements Initializable {
     public VBox vTaskItem;
 
     public void exit(MouseEvent mouseEvent) {
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
     public void goToShowTeams(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTask(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/ShowTeamsForLeader.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -47,7 +44,7 @@ public class SudoView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<Task> tasks = LoggedController.getInstance().getSelectedTeam().getAllTasks();
+        ArrayList<Task> tasks = Controller.controller.getSelectedTeam().getAllTasks();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {
             try {

@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,7 +26,6 @@ public class CreateTeamForLeaderView implements Initializable {
     public ChoiceBox members;
     public ListView membersList;
     public Button addMember;
-    public Button addMember1;
     public Button deleteMember;
     public AnchorPane pane;
     public Label error;
@@ -37,8 +35,6 @@ public class CreateTeamForLeaderView implements Initializable {
     private int result;
 
     public void exit(MouseEvent mouseEvent) {
-        LoggedController.getInstance().setSelectedTask(null);
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
@@ -47,8 +43,8 @@ public class CreateTeamForLeaderView implements Initializable {
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void Create(ActionEvent actionEvent) {
-        int status = controller.controller.creatTeam(LoggedController.getInstance().getLoggedInUser(), teamTitleField.getText());
+    public void Create(ActionEvent actionEvent) throws IOException {
+        int status = Controller.controller.creatTeam(teamTitleField.getText());
         if (status == 1)
             error.setText("There is another team with this name!");
         else if (status == 2)
@@ -59,7 +55,7 @@ public class CreateTeamForLeaderView implements Initializable {
         }
     }
 
-    public void addMember(ActionEvent actionEvent) {
+    public void addMember(ActionEvent actionEvent) throws IOException {
 
         if (selectedTeam == null) {
             error.setText("firs create team!");
@@ -67,16 +63,14 @@ public class CreateTeamForLeaderView implements Initializable {
             error.setText("Old added to list!");
         else {
             membersList.getItems().add(members.getValue().toString());
-            result = controller.controller.addMember(LoginView.LoginUser,
-                    selectedTeam,
-                    members.getValue().toString());
+            result = Controller.controller.addMember(members.getValue().toString());
             error.setText("User successfully added!");
         }
     }
 
-    public void deleteMember(ActionEvent actionEvent) {
+    public void deleteMember(ActionEvent actionEvent) throws IOException {
         String selectedItem = membersList.getSelectionModel().getSelectedItem().toString();
-        result = controller.controller.deleteMember(LoggedController.getInstance().getLoggedInUser(), selectedTeam, selectedItem);
+        result = Controller.controller.deleteMember(selectedItem);
         error.setText("User successfully removed");
         membersList.getItems().clear();
         for (User user : selectedTeam.getTeamMembers()) {
@@ -85,14 +79,13 @@ public class CreateTeamForLeaderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTeam(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void suspendMember(ActionEvent actionEvent) {
+    public void suspendMember(ActionEvent actionEvent) throws IOException {
         String selectedItem = membersList.getSelectionModel().getSelectedItem().toString();
-        result = controller.controller.suspendMember(LoggedController.getInstance().getLoggedInUser(), selectedTeam, selectedItem);
+        result = Controller.controller.suspendMember(selectedItem);
         error.setText("User successfully suspended");
         membersList.getItems().clear();
         for (User user : selectedTeam.getTeamMembers()) {

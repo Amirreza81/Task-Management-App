@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,20 +29,16 @@ public class ShowTeamForLeaderView implements Initializable {
     public Button addMember;
     public Button deleteMember;
     public Label lblError;
-    private final Team selectTeam = LoggedController.getInstance().getSelectedTeam();
     public Button suspendMember;
     public Button leave;
     private int result;
 
 
     public void exit(MouseEvent mouseEvent) {
-        LoggedController.getInstance().setSelectedTask(null);
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
     public void goToShowTeams(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTeam(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/ShowTeamsForLeader.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -53,32 +48,30 @@ public class ShowTeamForLeaderView implements Initializable {
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void addMember(ActionEvent actionEvent) {
+    public void addMember(ActionEvent actionEvent) throws IOException {
         if (membersList.getItems().contains(members.getValue().toString()))
             lblError.setText("Old added to list!");
         else {
             membersList.getItems().add(members.getValue().toString());
-            result = controller.controller.addMember(LoginView.LoginUser,
-                    LoggedController.getInstance().getSelectedTeam(),
-                    members.getValue().toString());
+            result = Controller.controller.addMember(members.getValue().toString());
             lblError.setText("User successfully added!");
         }
     }
 
-    public void deleteMember(ActionEvent actionEvent) {
+    public void deleteMember(ActionEvent actionEvent) throws IOException {
         String selectedItem = membersList.getSelectionModel().getSelectedItem().toString();
-        result = controller.controller.deleteMember(LoggedController.getInstance().getLoggedInUser(), LoggedController.getInstance().getSelectedTeam(), selectedItem);
+        result = Controller.controller.deleteMember(selectedItem);
         lblError.setText("User successfully removed");
         membersList.getItems().clear();
-        for (User user : LoggedController.getInstance().getLoggedTeam().getTeamMembers()) {
+        for (User user : Controller.controller.getSelectedTeam().getTeamMembers()) {
             membersList.getItems().add(user.getUserName());
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Team selectTeam = getTeam();
         teamTitleField.setText(selectTeam.getTeamName());
-
         for (User user : selectTeam.getTeamMembers()) {
             membersList.getItems().add(user.getUserName());
         }
@@ -89,18 +82,21 @@ public class ShowTeamForLeaderView implements Initializable {
 
     }
 
+    public Team getTeam() {
+        return Controller.controller.getSelectedTeam();
+    }
+
     public void leave(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTeam(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void suspendMember(ActionEvent actionEvent) {
+    public void suspendMember(ActionEvent actionEvent) throws IOException {
         String selectedItem = membersList.getSelectionModel().getSelectedItem().toString();
-        result = controller.controller.suspendMember(LoggedController.getInstance().getLoggedInUser(), LoggedController.getInstance().getSelectedTeam(), selectedItem);
+        result = Controller.controller.suspendMember(selectedItem);
         lblError.setText("User successfully suspended");
         membersList.getItems().clear();
-        for (User user : LoggedController.getInstance().getLoggedTeam().getTeamMembers()) {
+        for (User user : Controller.controller.getSelectedTeam().getTeamMembers()) {
             membersList.getItems().add(user.getUserName());
         }
     }

@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Task;
-import model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +20,6 @@ import java.util.ResourceBundle;
 
 public class TaskPageForCalenderView implements Initializable {
 
-    private final Task selectTask = LoggedController.getInstance().getSelectedTask();
     public AnchorPane pane;
     public ImageView exit;
     public Button Calender;
@@ -34,7 +31,6 @@ public class TaskPageForCalenderView implements Initializable {
     public Label lblDeadline;
 
     public void exit(MouseEvent mouseEvent) {
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
@@ -43,11 +39,15 @@ public class TaskPageForCalenderView implements Initializable {
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 
+    public Task getTask() {
+        return Controller.controller.getSelectedTask();
+    }
+
     public void leave(ActionEvent actionEvent) throws IOException {
-        if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Leader")) {
+        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
-        } else if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Admin")) {
+        } else if (Controller.controller.getLoggedInUser().getRole().equals("Admin")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
         } else {
@@ -58,7 +58,7 @@ public class TaskPageForCalenderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Task selectTask = getTask();
         lblTaskTitle.setText(selectTask.getTitle());
         lblDeadline.setText(selectTask.getDeadline().toString());
         lblPriority.setText(selectTask.getPriority());

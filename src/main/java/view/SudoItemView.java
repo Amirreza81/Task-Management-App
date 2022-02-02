@@ -1,12 +1,9 @@
 package view;
 
-import controller.LoggedController;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import model.Task;
-import model.Team;
 
 import java.net.URL;
 import java.util.ResourceBundle;
