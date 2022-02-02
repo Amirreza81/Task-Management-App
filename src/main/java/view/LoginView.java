@@ -16,7 +16,6 @@ import java.util.Optional;
 
 public class LoginView extends Application {
 
-    public static User LoginUser;
     public TextField username;
     public PasswordField password;
     public Button login;

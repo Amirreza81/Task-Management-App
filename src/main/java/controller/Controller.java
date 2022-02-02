@@ -1,6 +1,8 @@
 package controller;
 
 import model.Board;
+import model.Task;
+import model.Team;
 import model.User;
 
 import java.io.DataInputStream;
@@ -51,6 +53,43 @@ public class Controller {
         return null;
         }
     }
+    public Team getLoggedTeam(){
+        try {
+            outputStream.writeUTF("get LoggedTeam --token "+token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(Team.class);
+            return (Team) jsonObjectController.createJsonObject(result);
+        }
+        catch (IOException e) {
+            return null;
+        }
+    }
+    public Task getSelectedTask(){
+        try {
+            outputStream.writeUTF("get SelectedTask --token "+token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(Task.class);
+            return (Task) jsonObjectController.createJsonObject(result);
+        }
+        catch (IOException e) {
+            return null;
+        }
+    }
+    public Task getSelectedTeamForTask(){
+        try {
+            outputStream.writeUTF("get SelectedTeamForTask --token "+token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(Task.class);
+            return (Task) jsonObjectController.createJsonObject(result);
+        }
+        catch (IOException e) {
+            return null;
+        }
+    }
+
 
     public Board getLoggedBoard() {
         try {
