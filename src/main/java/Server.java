@@ -90,16 +90,49 @@ public class Server {
             return recognizeSetObjectCommand(input);
         } else if (input.startsWith("task")) {
             return recognizeTaskCommand(input);
+        } else if (input.startsWith("team")) {
+            return recognizeTeamCommand(input);
         }
 
         // this means the command is not meaningful
         return "";
     }
 
+    private String recognizeTeamCommand(String input) {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher("team creatTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.creatTeam(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
+                    matcher.group(1));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("team addMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.addMember(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
+                    LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
+                    matcher.group(1));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("team deleteMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.deleteMember(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
+                    LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
+                    matcher.group(1));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("team suspendMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.suspendMember(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
+                    LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
+                    matcher.group(1));
+            return "" + result;
+        }
+        return "-1";
+    }
+
     private String recognizeSetObjectCommand(String input) {
         Matcher matcher;
         if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTeamForTask --teamName ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController.getInstance(matcher.group(2)).setSelectedTeamForTask(Controller.controller.findTeam(matcher.group(1)));
+            return "successful";
+        } else if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTask --taskTitle ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedTask(Task.getTaskByTitle(LoggedController.getInstance(matcher.group(2)).getLoggedInUser().getAllTasksForUser(), matcher.group(1)));
+            return "successful";
+        } else if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedTeam(Controller.controller.findTeam(matcher.group(1)));
             return "successful";
         }
         return "-1";
@@ -122,10 +155,30 @@ public class Server {
                     , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
                     matcher.group(1));
             return "successful";
-        } else if ((matcher = Controller.controller.getCommandMatcher("task editTaskDeadline --taskDeadline %s --token (.*)", input)).matches()) {
+        } else if ((matcher = Controller.controller.getCommandMatcher("task editTaskDeadline --taskDeadline ([^ ]+) --token (.*)", input)).matches()) {
             int result = Controller.controller.editTaskDeadline(LoggedController.getInstance(matcher.group(2)).getLoggedInUser()
                     , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
                     matcher.group(1));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("task removeAssignedUsers --assignedUsers ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.removeAssignedUsers(LoggedController.getInstance(matcher.group(2)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
+                    User.getUserByUsername(matcher.group(1)));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("task assignMember --taskId ([^ ]+) --username ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.assignMember(LoggedController.getInstance(matcher.group(3)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(3)).getSelectedTeamForTask()
+                    , matcher.group(1)
+                    , matcher.group(2));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("task creatTask --taskTitle ([^ ]+) --startTime ([^ ]+) --deadline ([^ ]+) --description ([^ ]+) --priority ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.creatTask(LoggedController.getInstance(matcher.group(6)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(6)).getSelectedTeamForTask()
+                    , matcher.group(1)
+                    , matcher.group(2)
+                    , matcher.group(3)
+                    , matcher.group(4)
+                    , matcher.group(5));
             return "" + result;
         }
         return "-1";
@@ -219,6 +272,12 @@ public class Server {
             JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getSelectedTeamForTask());
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("get SelectedTeam --token (.*)"
+                        , input)).matches()) {
+            JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(matcher.group(1)).getSelectedTeam());
         }
         return "-1";
 
