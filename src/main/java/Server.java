@@ -80,54 +80,33 @@ public class Server {
             return recognizeRegisterLoginCommand(input);
         } else if (input.startsWith("get")) {
             return recognizeGetObjectsCommand(input);
-        } else if (input.startsWith("profile")){
+        } else if (input.startsWith("profile")) {
             return recognizeProfileMenuCommand(input);
-        } else if (input.equals("admin")){
-            return recognizeAdminMenuCommand(input);
+        } else if (input.startsWith("board")) {
+            return recognizeBoardMenuCommand(input);
         }
 
         // this means the command is not meaningful
         return "";
     }
 
-    private String recognizeAdminMenuCommand(String input) {
+    private String recognizeBoardMenuCommand(String input) throws ParseException {
         Matcher matcher;
-        if ((matcher = Controller.controller.getCommandMatcher("admin ban user --user ([^ ]+) --token (.*)", input)).matches()){
-            int response = Controller.controller.banUser(matcher.group(1));
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin change role --user ([^ ]+) --role ([^ ]+) --token (.*)", input)).matches()){
-            int response = Controller.controller.changeRole(matcher.group(1), matcher.group(2));
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin show --pendingTeams --token (.*)", input)).matches()){
-            int response = Controller.controller.showPendingTeams();
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin accept --teams ([A-Za-z0-9 ]+) --token (.*)", input)).matches()){
-            int response = Controller.controller.acceptTeam(matcher.group(1));
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin reject --teams ([A-Za-z0-9 ]+) --token (.*)", input)).matches()){
-            int response = Controller.controller.rejectTeam(matcher.group(1));
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --team (.*) --token (.*)", input)).matches()){
-            int response = Controller.controller.sendNotificationForTeam(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --all --token (.*)", input)).matches()){
-            int response = Controller.controller.sendToAll(matcher.group(1), LoggedController.getInstance(matcher.group(2)).getLoggedInUser());
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --user ([^ ]+) --token %s", input)).matches()){
-            int response = Controller.controller.sendNotificationForUser(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
-            return ""+response;
+        if ((matcher = Controller.controller.getCommandMatcher("board updateFailed --token (.*)", input)).matches()){
+            Controller.controller.updateFailed(LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
+            return "successful";
         }
         return "-1";
     }
 
     private String recognizeProfileMenuCommand(String input) {
         Matcher matcher;
-        if ((matcher = Controller.controller.getCommandMatcher("Profile --change --username ([^ ]+) --token (.*)", input)).matches()){
+        if ((matcher = Controller.controller.getCommandMatcher("Profile --change --username ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.changeUserName(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(), matcher.group(1));
-            return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --change --oldPassword ([^ ]+) --newPassword ([^ ]+) --token (.*)", input)).matches()){
+            return "" + response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --change --oldPassword ([^ ]+) --newPassword ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.changePassword(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(1), matcher.group(2));
-            return ""+response;
+            return "" + response;
         }
         return "-1";
     }
@@ -146,22 +125,19 @@ public class Server {
             JsonObjectController<Board> jsonObjectController = new JsonObjectController<Board>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("get LoggedTeam --token (.*)"
                         , input)).matches()) {
             JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getLoggedTeam());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("get SelectedTask --token (.*)"
                         , input)).matches()) {
             JsonObjectController<Task> jsonObjectController = new JsonObjectController<Task>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getSelectedTask());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("get SelectedTeamForTask --token (.*)"
                         , input)).matches()) {
             JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
@@ -184,7 +160,7 @@ public class Server {
                         , input)).matches()) {
             int response = Controller.controller.logIn(matcher.group(1), matcher.group(2));
             String token = makeToken();
-            if (response==3||response==4||response==5){
+            if (response == 3 || response == 4 || response == 5) {
                 LoggedController.getInstance(token).setLoggedInUser(User.getUserByUsername(matcher.group(1)));
             }
             return ("" + response + " --token " + token);
