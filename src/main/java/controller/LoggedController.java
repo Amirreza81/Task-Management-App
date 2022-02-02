@@ -8,7 +8,7 @@ import model.User;
 import java.util.HashMap;
 
 public class LoggedController {
-    private static HashMap<Thread,LoggedController> instance = new HashMap<>();
+    private static HashMap<String,LoggedController> instance = new HashMap<>();
     private User loggedInUser;
     private Team loggedTeam;
     private Board selectedBoard;
@@ -21,11 +21,11 @@ public class LoggedController {
 
     }
 
-    public static LoggedController getInstance(Thread thread) {
-        if (instance.get(thread)==null){
-            instance.put(thread,new LoggedController());
+    public static LoggedController getInstance(String token) {
+        if (instance.get(token)==null){
+            instance.put(token,new LoggedController());
         }
-        return instance.get(thread);
+        return instance.get(token);
     }
 
     public void setLoggedInUser(User loggedInUser) {

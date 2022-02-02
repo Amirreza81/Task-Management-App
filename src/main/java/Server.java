@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.text.ParseException;
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 public class Server {
@@ -27,6 +29,7 @@ public class Server {
     }
 
     public void run() {
+        JsonController.getInstance().readFromJson();
         try {
             ServerSocket serverSocket = new ServerSocket(7777);
             while (true) {
@@ -46,13 +49,13 @@ public class Server {
                 processCommand(dataInputStream, dataOutputStream);
                 dataInputStream.close();
                 socket.close();
-            } catch (IOException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
         }).start();
     }
 
-    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream) throws IOException {
+    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream) throws IOException, ParseException {
         while (true) {
             String input;
             try {
@@ -68,24 +71,61 @@ public class Server {
         }
     }
 
-    private String recognizeCommand(String input) {
+    private String recognizeCommand(String input) throws ParseException {
         String[] parts = input.split(" ");
+        Matcher matcher;
+        if (input.startsWith("user")) {
+            return recognizeRegisterLoginCommand(input);
+        } else if (input.startsWith("get")) {
+            return recognizeGetObjectsCommand(input);
+        }
+
+        // this means the command is not meaningful
+        return "";
+    }
+
+    private String recognizeGetObjectsCommand(String input) {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("get LoggedUser --token (.*)"
+                        , input)).matches()) {
+
+            JsonObjectController<User> jsonObjectController = new JsonObjectController<User>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(matcher.group(1)).getLoggedInUser());
+        } else if (input.equals("get LoggedBoard --token (.*)")) {
+            JsonObjectController<Board> jsonObjectController = new JsonObjectController<Board>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
+        }
+        return "-1";
+
+    }
+
+    private String recognizeRegisterLoginCommand(String input) throws ParseException {
         Matcher matcher;
         if ((matcher = Controller.controller.getCommandMatcher
                 ("user create --username ([^ ]+) --password1 ([^ ]+) --password2 ([^ ]+) --email Address ([^ ]+)$"
                         , input)).matches()) {
-            int response = Controller.controller.register(matcher.group(1),matcher.group(2),matcher.group(3),matcher.group(4));
+            int response = Controller.controller.register(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
             return Integer.toString(response);
-        } else if (input.equals("get LoggedUser")) {
-            JsonObjectController<User> jsonObjectController = new JsonObjectController<User>();
-            return jsonObjectController.createJsonObject
-                    (LoggedController.getInstance(Thread.currentThread()).getLoggedInUser());
-        } else if (input.equals("get LoggedBoard")) {
-            JsonObjectController<Board> jsonObjectController = new JsonObjectController<Board>();
-            return jsonObjectController.createJsonObject
-                    (LoggedController.getInstance(Thread.currentThread()).getSelectedBoard());
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("user login --username ([^ ]+) --password ([^ ]+)"
+                        , input)).matches()) {
+            int response = Controller.controller.logIn(matcher.group(1), matcher.group(2));
+            String token = makeToken();
+            if (response==3||response==4||response==5){
+                LoggedController.getInstance(token).setLoggedInUser(User.getUserByUsername(matcher.group(1)));
+            }
+            return ("" + response + " --token " + token);
         }
-        // this means the command is not meaningful
-        return "";
+        return "-1";
+    }
+
+    private String makeToken() {
+        String token = UUID.randomUUID().toString();
+        return token;
     }
 }
+
+
