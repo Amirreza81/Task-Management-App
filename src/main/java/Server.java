@@ -98,6 +98,11 @@ public class Server {
             Controller.controller.updateFailed(LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
             return "successful";
         }
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("board BoardFailedPercentage --token (.*)", input)).matches()){
+            return ""+Controller.controller.getBoardFailedPercentage
+                    (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
+        }
         return "-1";
     }
 
