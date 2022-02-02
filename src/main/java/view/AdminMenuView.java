@@ -187,8 +187,8 @@ public class AdminMenuView {
         numberOfTeams.setText(Integer.toString(Team.getAllTeams().size()));
         int doneTask = 0;
         int failedTask = 0;
-        for (Team team: Team.getAllTeams()){
-            for (Board board: team.getBoards()){
+        for (Team team : Team.getAllTeams()) {
+            for (Board board : team.getBoards()) {
                 doneTask += board.getDone().size();
                 failedTask += board.getFailed().size();
             }
@@ -199,13 +199,12 @@ public class AdminMenuView {
 
     public void showListOfPendingTeams(ActionEvent actionEvent) {
         int response = Controller.controller.showPendingTeams();
-        if (response == 1){
+        if (response == 1) {
             listOfPendingTeams.setText("There are no Teams in Pending Status!");
-        }
-        else {
+        } else {
             ArrayList<String> pending = new ArrayList<>();
             int rank = 1;
-            for (Team team : Team.getPendingTeams()){
+            for (Team team : Team.getPendingTeams()) {
                 pending.add(rank + ". " + team.getTeamName() + "\n");
                 rank++;
             }
@@ -214,7 +213,7 @@ public class AdminMenuView {
     }
 
     public void accept(ActionEvent actionEvent) {
-        if (acceptTeams.getText() == null || acceptTeams.getText().equals("")){
+        if (acceptTeams.getText() == null || acceptTeams.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You should fill the fields!");
@@ -223,10 +222,10 @@ public class AdminMenuView {
         }
         int response = Controller.controller.acceptTeam(acceptTeams.getText());
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        if (response == 1){
+        if (response == 1) {
             alert.setTitle("Error");
             alert.setContentText("Some teams are not in pending status! Try again");
-        }else {
+        } else {
             alert.setTitle("Success");
             alert.setContentText("Teams accepted successfully!");
         }
@@ -234,7 +233,7 @@ public class AdminMenuView {
     }
 
     public void reject(ActionEvent actionEvent) {
-        if (rejectTeams.getText() == null || rejectTeams.getText().equals("")){
+        if (rejectTeams.getText() == null || rejectTeams.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You should fill the fields!");
@@ -243,10 +242,10 @@ public class AdminMenuView {
         }
         int response = Controller.controller.rejectTeam(rejectTeams.getText());
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        if (response == 1){
+        if (response == 1) {
             alert.setTitle("Error");
             alert.setContentText("Some teams are not in pending status! Try again");
-        }else {
+        } else {
             alert.setTitle("Success");
             alert.setContentText("Teams rejected successfully!");
         }
@@ -259,14 +258,14 @@ public class AdminMenuView {
     }
 
     public void sendToAll(ActionEvent actionEvent) {
-        if (textOfNotification.getText() == null || textOfNotification.getText().equals("")){
+        if (textOfNotification.getText() == null || textOfNotification.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You should fill the fields!");
             alert.showAndWait();
             return;
         }
-        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")){
+        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You aren't System Admin and you can't send messages to all!");
@@ -277,7 +276,7 @@ public class AdminMenuView {
     }
 
     public void sendToTeam(ActionEvent actionEvent) {
-        if (textOfNotification.getText() == null || textOfNotification.getText().equals("")){
+        if (textOfNotification.getText() == null || textOfNotification.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You should fill the fields!");
@@ -285,7 +284,7 @@ public class AdminMenuView {
             return;
         }
         int response = Controller.controller.sendNotificationForTeam(nameOfTeam.getText(), textOfNotification.getText());
-        if (response == 1){
+        if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("There is no team with this name");
@@ -294,7 +293,7 @@ public class AdminMenuView {
     }
 
     public void sendToUser(ActionEvent actionEvent) {
-        if (textOfNotification.getText() == null || textOfNotification.getText().equals("")){
+        if (textOfNotification.getText() == null || textOfNotification.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("You should fill the fields!");
@@ -302,7 +301,7 @@ public class AdminMenuView {
             return;
         }
         int response = Controller.controller.sendNotificationForUser(nameOfUser.getText(), textOfNotification.getText());
-        if (response == 1){
+        if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("There is no team with this name");

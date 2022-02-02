@@ -16,7 +16,7 @@ public class Controller {
 
     private static DataInputStream inputStream;
     private static DataOutputStream outputStream;
-    public  static final Controller controller = new Controller();
+    public static final Controller controller = new Controller();
     public static String token;
 
     public static void setupConnection() {
@@ -33,7 +33,7 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("user create --username %s --password1 %s --password2 %s --email Address %s"
-                            ,username,password1,password2,email));
+                            , username, password1, password2, email));
             outputStream.flush();
             String result = inputStream.readUTF();
             return Integer.parseInt(result);
@@ -41,51 +41,51 @@ public class Controller {
             return -1;
         }
     }
-    public User getLoggedInUser(){
+
+    public User getLoggedInUser() {
         try {
-            outputStream.writeUTF("get LoggedUser --token "+token);
+            outputStream.writeUTF("get LoggedUser --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(User.class);
             return (User) jsonObjectController.createJsonObject(result);
-        }
-         catch (IOException e) {
-        return null;
+        } catch (IOException e) {
+            return null;
         }
     }
-    public Team getLoggedTeam(){
+
+    public Team getLoggedTeam() {
         try {
-            outputStream.writeUTF("get LoggedTeam --token "+token);
+            outputStream.writeUTF("get LoggedTeam --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(Team.class);
             return (Team) jsonObjectController.createJsonObject(result);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }
-    public Task getSelectedTask(){
+
+    public Task getSelectedTask() {
         try {
-            outputStream.writeUTF("get SelectedTask --token "+token);
+            outputStream.writeUTF("get SelectedTask --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(Task.class);
             return (Task) jsonObjectController.createJsonObject(result);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }
-    public Task getSelectedTeamForTask(){
+
+    public Task getSelectedTeamForTask() {
         try {
-            outputStream.writeUTF("get SelectedTeamForTask --token "+token);
+            outputStream.writeUTF("get SelectedTeamForTask --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(Task.class);
             return (Task) jsonObjectController.createJsonObject(result);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }
@@ -93,13 +93,12 @@ public class Controller {
 
     public Board getLoggedBoard() {
         try {
-            outputStream.writeUTF("get LoggedBoard --token "+token);
+            outputStream.writeUTF("get LoggedBoard --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(Board.class);
             return (Board) jsonObjectController.createJsonObject(result);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return null;
         }
 
@@ -110,10 +109,10 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("user login --username %s --password %s"
-                            ,username1,password1));
+                            , username1, password1));
             outputStream.flush();
             String result = inputStream.readUTF();
-            Matcher matcher = getCommandMatcher("^(\\d) --token (.*)$",result);
+            Matcher matcher = getCommandMatcher("^(\\d) --token (.*)$", result);
             matcher.matches();
             String response = matcher.group(1);
             token = matcher.group(2);
@@ -123,6 +122,7 @@ public class Controller {
         }
 
     }
+
     public Matcher getCommandMatcher(String pattern, String input) {
         Pattern pattern1 = Pattern.compile(pattern);
         Matcher matcher = pattern1.matcher(input);
@@ -135,10 +135,10 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("Profile --change --username %s --token %s"
-                            ,newUsername, token));
+                            , newUsername, token));
             outputStream.flush();
             String result = inputStream.readUTF();
-            Matcher matcher = getCommandMatcher("(\\d)",result);
+            Matcher matcher = getCommandMatcher("(\\d)", result);
             matcher.matches();
             String response = matcher.group(1);
             return Integer.parseInt(response);
@@ -151,10 +151,10 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("Profile --change --oldPassword %s --newPassword %s --token %s"
-                            ,oldPassword, newPassword, token));
+                            , oldPassword, newPassword, token));
             outputStream.flush();
             String result = inputStream.readUTF();
-            Matcher matcher = getCommandMatcher("(\\d)",result);
+            Matcher matcher = getCommandMatcher("(\\d)", result);
             matcher.matches();
             String response = matcher.group(1);
             return Integer.parseInt(response);
@@ -164,7 +164,7 @@ public class Controller {
     }
 
     public void updateFailed() throws IOException {
-        outputStream.writeUTF("board updateFailed --token "+token);
+        outputStream.writeUTF("board updateFailed --token " + token);
         outputStream.flush();
         inputStream.readUTF();
     }
@@ -205,7 +205,7 @@ public class Controller {
         return Integer.parseInt(result);
     }
     public String getBoardFailedPercentage() throws IOException {
-        outputStream.writeUTF("board BoardFailedPercentage --token "+token);
+        outputStream.writeUTF("board BoardFailedPercentage --token " + token);
         outputStream.flush();
         return inputStream.readUTF();
     }
@@ -215,10 +215,10 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("admin ban user --user %s --token %s"
-                            ,userName,token));
+                            , userName, token));
             outputStream.flush();
             String result = inputStream.readUTF();
-            Matcher matcher = getCommandMatcher("(\\d)",result);
+            Matcher matcher = getCommandMatcher("(\\d)", result);
             matcher.matches();
             String response = matcher.group(1);
             return Integer.parseInt(response);
@@ -231,10 +231,10 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("admin change role --user %s --role %s --token %s"
-                            ,userName, newRole1, token));
+                            , userName, newRole1, token));
             outputStream.flush();
             String result = inputStream.readUTF();
-            Matcher matcher = getCommandMatcher("(\\d)",result);
+            Matcher matcher = getCommandMatcher("(\\d)", result);
             matcher.matches();
             String response = matcher.group(1);
             return Integer.parseInt(response);
@@ -247,10 +247,89 @@ public class Controller {
         try {
             outputStream.writeUTF(String.format
                     ("admin show --pendingTeams --token %s"
-                            ,userName, newRole1, token));
+                            , token));
             outputStream.flush();
             String result = inputStream.readUTF();
-            Matcher matcher = getCommandMatcher("(\\d)",result);
+            Matcher matcher = getCommandMatcher("(\\d)", result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public int acceptTeam(String teamName) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin accept --teams %s --token %s"
+                            , teamName, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)", result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public int rejectTeam(String teamName) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin accept --teams %s --token %s"
+                            , teamName, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)", result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public void sendNotificationToAll(String notification) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin send --notification %s --all --token %s"
+                            ,notification, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)", result);
+            matcher.matches();
+//            String response = matcher.group(1);
+//            return Integer.parseInt(response);
+        } catch (IOException ignored) {
+        }
+    }
+
+    public int sendNotificationForTeam(String teamName, String notifications) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin send --notification %s --team %s --token %s"
+                            , notifications, teamName, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)", result);
+            matcher.matches();
+            String response = matcher.group(1);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    public int sendNotificationForUser(String userName, String notifications) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("admin send --notification %s --user %s --token %s"
+                            , notifications, userName, token));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("(\\d)", result);
             matcher.matches();
             String response = matcher.group(1);
             return Integer.parseInt(response);
