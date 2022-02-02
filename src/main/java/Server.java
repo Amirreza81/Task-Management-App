@@ -80,27 +80,66 @@ public class Server {
             return recognizeRegisterLoginCommand(input);
         } else if (input.startsWith("get")) {
             return recognizeGetObjectsCommand(input);
-        } else if (input.startsWith("Profile")) {
+        } else if (input.startsWith("profile")) {
             return recognizeProfileMenuCommand(input);
         } else if (input.startsWith("board")) {
             return recognizeBoardMenuCommand(input);
-        } else if (input.startsWith("admin")){
+        } else if (input.startsWith("admin")) {
             return recognizeAdminMenuCommand(input);
+        } else if (input.startsWith("set")) {
+            return recognizeSetObjectCommand(input);
+        } else if (input.startsWith("task")) {
+            return recognizeTaskCommand(input);
         }
 
         // this means the command is not meaningful
         return "";
     }
 
+    private String recognizeSetObjectCommand(String input) {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTeamForTask --teamName ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedTeamForTask(Controller.controller.findTeam(matcher.group(1)));
+            return "successful";
+        }
+        return "-1";
+    }
+
+    private String recognizeTaskCommand(String input) throws ParseException {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher("task editTaskTitle --taskTitle ([^ ]+) --token (.*)", input)).matches()) {
+            Controller.controller.editTaskTitle(LoggedController.getInstance(matcher.group(2)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
+                    matcher.group(1));
+            return "successful";
+        } else if ((matcher = Controller.controller.getCommandMatcher("task editTaskPriority --taskPriority ([^ ]+) --token (.*)", input)).matches()) {
+            Controller.controller.editTaskPriority(LoggedController.getInstance(matcher.group(2)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
+                    matcher.group(1));
+            return "successful";
+        } else if ((matcher = Controller.controller.getCommandMatcher("task editTaskDescription --taskDescription ([^ ]+) --token (.*)", input)).matches()) {
+            Controller.controller.editTaskDescription(LoggedController.getInstance(matcher.group(2)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
+                    matcher.group(1));
+            return "successful";
+        } else if ((matcher = Controller.controller.getCommandMatcher("task editTaskDeadline --taskDeadline %s --token (.*)", input)).matches()) {
+            int result = Controller.controller.editTaskDeadline(LoggedController.getInstance(matcher.group(2)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(2)).getSelectedTask(),
+                    matcher.group(1));
+            return "" + result;
+        }
+        return "-1";
+    }
+
     private String recognizeBoardMenuCommand(String input) throws ParseException {
         Matcher matcher;
-        if ((matcher = Controller.controller.getCommandMatcher("board updateFailed --token (.*)", input)).matches()){
+        if ((matcher = Controller.controller.getCommandMatcher("board updateFailed --token (.*)", input)).matches()) {
             Controller.controller.updateFailed(LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
             return "successful";
         }
         if ((matcher = Controller.controller.getCommandMatcher
-                ("board BoardFailedPercentage --token (.*)", input)).matches()){
-            return ""+Controller.controller.getBoardFailedPercentage
+                ("board BoardFailedPercentage --token (.*)", input)).matches()) {
+            return "" + Controller.controller.getBoardFailedPercentage
                     (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
         }
         return "-1";
