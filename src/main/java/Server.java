@@ -3,6 +3,8 @@ import controller.JsonController;
 import controller.JsonObjectController;
 import controller.LoggedController;
 import model.Board;
+import model.Task;
+import model.Team;
 import model.User;
 
 import java.io.DataInputStream;
@@ -89,14 +91,36 @@ public class Server {
         if ((matcher = Controller.controller.getCommandMatcher
                 ("get LoggedUser --token (.*)"
                         , input)).matches()) {
-
             JsonObjectController<User> jsonObjectController = new JsonObjectController<User>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getLoggedInUser());
-        } else if (input.equals("get LoggedBoard --token (.*)")) {
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("get LoggedBoard --token (.*)"
+                        , input)).matches()) {
             JsonObjectController<Board> jsonObjectController = new JsonObjectController<Board>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
+        }
+        else if ((matcher = Controller.controller.getCommandMatcher
+                ("get LoggedTeam --token (.*)"
+                        , input)).matches()) {
+            JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(matcher.group(1)).getLoggedTeam());
+        }
+        else if ((matcher = Controller.controller.getCommandMatcher
+                ("get SelectedTask --token (.*)"
+                        , input)).matches()) {
+            JsonObjectController<Task> jsonObjectController = new JsonObjectController<Task>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(matcher.group(1)).getSelectedTask());
+        }
+        else if ((matcher = Controller.controller.getCommandMatcher
+                ("get SelectedTeamForTask --token (.*)"
+                        , input)).matches()) {
+            JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
+            return jsonObjectController.createJsonObject
+                    (LoggedController.getInstance(matcher.group(1)).getSelectedTeamForTask());
         }
         return "-1";
 
