@@ -51,7 +51,7 @@ public class BoardMenuFailedTasksPageView {
             }
         }
         pFailed.setText("board failed tasks percentage : "+
-                controller.controller.getBoardFailedPercentage(board));
+                Controller.controller.getBoardFailedPercentage());
     }
 
     public void back(ActionEvent actionEvent) throws IOException {

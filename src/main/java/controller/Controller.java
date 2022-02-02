@@ -169,6 +169,13 @@ public class Controller {
         inputStream.readUTF();
     }
 
+    public String getBoardFailedPercentage() throws IOException {
+        outputStream.writeUTF("board BoardFailedPercentage --token "+token);
+        outputStream.flush();
+        return inputStream.readUTF();
+    }
+
+
     public int banUser(String userName) {
         try {
             outputStream.writeUTF(String.format
