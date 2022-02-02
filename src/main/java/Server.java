@@ -80,10 +80,23 @@ public class Server {
             return recognizeRegisterLoginCommand(input);
         } else if (input.startsWith("get")) {
             return recognizeGetObjectsCommand(input);
+        } else if (input.startsWith("profile")){
+            return recognizeProfileMenuCommand(input);
         }
 
         // this means the command is not meaningful
         return "";
+    }
+
+    private String recognizeProfileMenuCommand(String input) {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher("Profile --change --username ([^ ]+) --token (.*)", input)).matches()){
+            int response = Controller.controller.changeUserName(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(), matcher.group(1));
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --change --oldPassword ([^ ]+) --newPassword ([^ ]+) --token", input)).matches()){
+
+        }
+        return "-1";
     }
 
     private String recognizeGetObjectsCommand(String input) {
