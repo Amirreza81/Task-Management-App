@@ -169,13 +169,13 @@ public class ProfileView  {
     }
 
     public void updateNotifications(ActionEvent actionEvent) {
-        if (LoggedController.getInstance().getLoggedInUser().getNotifications().size() == 0) {
+        if (Controller.controller.getLoggedInUser().getNotifications().size() == 0) {
             notifications.setText("No notification for you!");
             return;
         }
         ArrayList<String> allNotifications = new ArrayList<>();
         int rank = 1;
-        for (Notification notification : LoggedController.getInstance().getLoggedInUser().getNotifications()) {
+        for (Notification notification : Controller.controller.getLoggedInUser().getNotifications()) {
             allNotifications.add(rank + ". From " + notification.getSender().getUserName() + ":\n" + notification.getText() + "\n");
             rank++;
         }
@@ -185,7 +185,7 @@ public class ProfileView  {
     public void updateLog(ActionEvent actionEvent) {
         ArrayList<String> showLogs = new ArrayList<>();
         int rank = 1;
-        for (Log log : LoggedController.getInstance().getLoggedInUser().getAllLogs()) {
+        for (Log log : Controller.controller.getLoggedInUser().getAllLogs()) {
             showLogs.add(rank + ". " + log.getDate());
             rank++;
         }
@@ -199,7 +199,7 @@ public class ProfileView  {
 
     public void updateTeam(ActionEvent actionEvent) {
         if(tableView!=null)pane.getChildren().remove(tableView);
-        ObservableList<Team> list = FXCollections.observableArrayList(LoggedController.getInstance().getLoggedInUser().getUserTeams());
+        ObservableList<Team> list = FXCollections.observableArrayList(Controller.controller.getLoggedInUser().getUserTeams());
         tableView = new TableView<>();
         tableView.setLayoutX(50);
         tableView.setLayoutY(58.0);
