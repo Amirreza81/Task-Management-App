@@ -1,5 +1,6 @@
 package view.BoardMenu;
 
+import controller.Controller;
 import controller.LoggedController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +47,6 @@ public class BoardMenuSecondPageForLeaderView {
             pane.getChildren().remove(addTaskBtn);
 
         }
-        board = LoggedController.getInstance().getSelectedBoard();
         updateHBOX();
         makeDoneColumn();
     }
@@ -54,6 +54,7 @@ public class BoardMenuSecondPageForLeaderView {
     public void updateHBOX() {
         if(board.isCreated())condition.setText("board construction is done");
         hBox.getChildren().clear();
+        Board board = Controller.controller.getLoggedBoard();
         ArrayList<Category> categories  = board.getAllCategories();
         Node[] nodes = new Node[categories.size()];
         for (int i = 0; i < nodes.length; i++) {

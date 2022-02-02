@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +27,6 @@ public class LoginView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        JsonController.getInstance().readFromJson();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         primaryStage.setTitle("phase2");
         primaryStage.setResizable(false);
@@ -44,7 +42,7 @@ public class LoginView extends Application {
     public void login(ActionEvent actionEvent) throws ParseException, IOException {
         String username1 = username.getText();
         String password1 = password.getText();
-        int response = controller.controller.logIn(username1, password1);
+        int response = Controller.controller.logIn(username1, password1);
         if (username1.isEmpty() || password1.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -59,8 +57,6 @@ public class LoginView extends Application {
             username.clear();
             password.clear();
         }
-        LoggedController.getInstance().setLoggedInUser(User.getUserByUsername(username1));
-
         if (response == 3) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MemberMenu.fxml"));
             ((Stage) errorLabel.getScene().getWindow()).setScene(new Scene(root));
@@ -86,7 +82,6 @@ public class LoginView extends Application {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.get() == ButtonType.OK) confirmation = true;
         if (confirmation) {
-            JsonController.getInstance().updateJson();
             System.exit(0);
         }
     }

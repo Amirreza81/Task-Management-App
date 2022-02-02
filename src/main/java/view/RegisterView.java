@@ -70,7 +70,7 @@ public class RegisterView {
         else if (response == 0){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Register");
-            alert.setContentText("Sign in successfully! :)\n" +
+            alert.setContentText("Sign up successfully! :)\n" +
                     "Now you can log in.");
             alert.showAndWait();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));

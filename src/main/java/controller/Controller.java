@@ -7,12 +7,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Controller {
 
     private static DataInputStream inputStream;
     private static DataOutputStream outputStream;
     public  static final Controller controller = new Controller();
+    public static String token;
 
     public static void setupConnection() {
         try {
@@ -38,7 +41,7 @@ public class Controller {
     }
     public User getLoggedInUser(){
         try {
-            outputStream.writeUTF("get LoggedUser");
+            outputStream.writeUTF("get LoggedUser --token "+token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(User.class);
@@ -51,7 +54,7 @@ public class Controller {
 
     public Board getLoggedBoard() {
         try {
-            outputStream.writeUTF("get LoggedBoard");
+            outputStream.writeUTF("get LoggedBoard --token "+token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(Board.class);
@@ -60,6 +63,32 @@ public class Controller {
         catch (IOException e) {
             return null;
         }
+
+    }
+
+
+    public int logIn(String username1, String password1) {
+        try {
+            outputStream.writeUTF(String.format
+                    ("user login --username %s --password %s"
+                            ,username1,password1));
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            Matcher matcher = getCommandMatcher("^(\\d) --token (.*)$",result);
+            matcher.matches();
+            String response = matcher.group(1);
+            token = matcher.group(2);
+            return Integer.parseInt(response);
+        } catch (IOException e) {
+            return -1;
+        }
+
+    }
+    public Matcher getCommandMatcher(String pattern, String input) {
+        Pattern pattern1 = Pattern.compile(pattern);
+        Matcher matcher = pattern1.matcher(input);
+        matcher.matches();
+        return matcher;
 
     }
 }

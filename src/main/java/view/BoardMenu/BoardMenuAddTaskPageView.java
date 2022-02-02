@@ -27,13 +27,9 @@ public class BoardMenuAddTaskPageView {
     public VBox vTaskItem;
     public Label response;
     public AnchorPane pane;
-    private User user;
-    private Board board;
     private TableView<Category> tableView;
     @FXML
     public void initialize() {
-        user = Controller.controller.getLoggedInUser();
-        board = Controller.controller.getLoggedBoard();
         makeCategoriesTable();
         makeTasksVbox();
 
@@ -41,7 +37,7 @@ public class BoardMenuAddTaskPageView {
 
     private void makeTasksVbox() {
         vTaskItem.getChildren().clear();
-        ArrayList<Task> tasks = board.getTeam().getAllTasks();
+        ArrayList<Task> tasks = Controller.controller.getLoggedBoard().getTeam().getAllTasks();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {
             try {
