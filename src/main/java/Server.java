@@ -93,8 +93,9 @@ public class Server {
         if ((matcher = Controller.controller.getCommandMatcher("Profile --change --username ([^ ]+) --token (.*)", input)).matches()){
             int response = Controller.controller.changeUserName(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(), matcher.group(1));
             return ""+response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --change --oldPassword ([^ ]+) --newPassword ([^ ]+) --token", input)).matches()){
-
+        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --change --oldPassword ([^ ]+) --newPassword ([^ ]+) --token (.*)", input)).matches()){
+            int response = Controller.controller.changePassword(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(1), matcher.group(2));
+            return ""+response;
         }
         return "-1";
     }
