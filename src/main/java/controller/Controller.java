@@ -983,20 +983,6 @@ public class Controller {
         return 0;
     }
 
-    public int sendNotificationForUser(String username) {
-        if (!isUsernameAvailable(username)) {
-            return 1;
-        }
-        return 0;
-    }
-
-    public int sendNotificationForTeam(String teamName) {
-        if (!isTeamAvailable(teamName)) {
-            return 1;
-        }
-        return 0;
-    }
-
     public int showPendingTeams() {
         if (Team.getPendingTeams().size() == 0) {
             return 1;
@@ -1176,4 +1162,11 @@ public class Controller {
     }
 
 
+    public int sendToAll(String notification1, User loggedInUser) {
+        Notification notification = new Notification(notification1, loggedInUser, 0);
+        for (User user : User.getUsers()) {
+            user.getNotifications().add(notification);
+        }
+        return 1;
+    }
 }

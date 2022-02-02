@@ -82,10 +82,42 @@ public class Server {
             return recognizeGetObjectsCommand(input);
         } else if (input.startsWith("profile")){
             return recognizeProfileMenuCommand(input);
+        } else if (input.equals("admin")){
+            return recognizeAdminMenuCommand(input);
         }
 
         // this means the command is not meaningful
         return "";
+    }
+
+    private String recognizeAdminMenuCommand(String input) {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher("admin ban user --user ([^ ]+) --token (.*)", input)).matches()){
+            int response = Controller.controller.banUser(matcher.group(1));
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin change role --user ([^ ]+) --role ([^ ]+) --token (.*)", input)).matches()){
+            int response = Controller.controller.changeRole(matcher.group(1), matcher.group(2));
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin show --pendingTeams --token (.*)", input)).matches()){
+            int response = Controller.controller.showPendingTeams();
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin accept --teams ([A-Za-z0-9 ]+) --token (.*)", input)).matches()){
+            int response = Controller.controller.acceptTeam(matcher.group(1));
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin reject --teams ([A-Za-z0-9 ]+) --token (.*)", input)).matches()){
+            int response = Controller.controller.rejectTeam(matcher.group(1));
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --team (.*) --token (.*)", input)).matches()){
+            int response = Controller.controller.sendNotificationForTeam(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --all --token (.*)", input)).matches()){
+            int response = Controller.controller.sendToAll(matcher.group(1), LoggedController.getInstance(matcher.group(2)).getLoggedInUser());
+            return ""+response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --user ([^ ]+) --token %s", input)).matches()){
+            int response = Controller.controller.sendNotificationForUser(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
+            return ""+response;
+        }
+        return "-1";
     }
 
     private String recognizeProfileMenuCommand(String input) {
