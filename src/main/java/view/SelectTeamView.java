@@ -1,7 +1,6 @@
 package view;
 
-import controller.JsonController;
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +28,7 @@ public class SelectTeamView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<Team> teams = new ArrayList<>(LoggedController.getInstance().getLoggedInUser().getUserTeams());
+        ArrayList<Team> teams = new ArrayList<>(Controller.controller.getLoggedInUser().getUserTeams());
         Node[] nodes = new Node[teams.size()];
         for (int i = 0; i < nodes.length; i++) {
             try {
@@ -46,17 +45,14 @@ public class SelectTeamView implements Initializable {
     }
 
     public void exit(MouseEvent mouseEvent) {
-        JsonController.getInstance().updateJson();
         System.exit(0);
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
-        if (LoggedController.getInstance().getLoggedInUser().getRole().equals("Leader")) {
-            LoggedController.getInstance().setSelectedTeam(null);
+        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
         } else {
-            LoggedController.getInstance().setSelectedTeam(null);
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MemberMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
         }

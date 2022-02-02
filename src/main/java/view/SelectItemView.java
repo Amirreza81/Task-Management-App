@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +26,7 @@ public class SelectItemView implements Initializable {
 
     public void setTeam(Team team) {
         lblTeamTitle.setText(team.getTeamName());
-        if (LoggedController.getInstance().getLoggedInUser().getUserName().equals(team.getTeamLeader().getUserName()))
+        if (Controller.controller.getLoggedInUser().getUserName().equals(team.getTeamLeader().getUserName()))
             lblRole.setText("leader");
         else
             lblRole.setText("member");
@@ -38,9 +38,13 @@ public class SelectItemView implements Initializable {
         btnSelect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                LoggedController.getInstance().setSelectedTeamForTask(selectTeam);
+                try {
+                    Controller.controller.setSelectedTeamForTask(selectTeam.getTeamName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Parent root = null;
-                if (LoggedController.getInstance().getLoggedInUser().getUserName().equals(selectTeam.getTeamLeader().getUserName())) {
+                if (Controller.controller.getLoggedInUser().getUserName().equals(selectTeam.getTeamLeader().getUserName())) {
                     try {
                         root = FXMLLoader.load(getClass().getResource("/fxml/TaskListForLeader.fxml"));
                     } catch (IOException e) {

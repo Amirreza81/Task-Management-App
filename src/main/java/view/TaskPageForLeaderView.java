@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import controller.JsonController;
 import controller.LoggedController;
 import javafx.event.ActionEvent;
@@ -24,7 +25,6 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 
 public class TaskPageForLeaderView implements Initializable {
-    private final Task selectTask = LoggedController.getInstance().getSelectedTask();
     public AnchorPane pane;
     public TextField deadlineFiled;
     public TextField descriptionField;
@@ -49,30 +49,36 @@ public class TaskPageForLeaderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        taskTitleField.setText(selectTask.getTitle());
-        deadlineFiled.setText(selectTask.getDeadline().toString());
-        PriorityField.setText(selectTask.getPriority());
-        lblDateOfCreation.setText(selectTask.getDateOfCreation().toString());
-        if (selectTask.getDescription().equals(""))
+        Task selectedTask = getTask();
+        taskTitleField.setText(selectedTask.getTitle());
+        deadlineFiled.setText(selectedTask.getDeadline().toString());
+        PriorityField.setText(selectedTask.getPriority());
+        lblDateOfCreation.setText(selectedTask.getDateOfCreation().toString());
+        if (selectedTask.getDescription().equals(""))
             descriptionField.setText("description is null!");
         else
-            descriptionField.setText(selectTask.getDescription());
-        for (User user : selectTask.getAssignedUser()) {
+            descriptionField.setText(selectedTask.getDescription());
+        for (User user : selectedTask.getAssignedUser()) {
             membersList.getItems().add(user.getUserName());
         }
 
     }
 
-    public void Edit(ActionEvent actionEvent) throws ParseException {
+    public Task getTask() {
+        return Controller.controller.getSelectedTeamForTask();
+    }
+
+    public void Edit(ActionEvent actionEvent) throws ParseException, IOException {
+        Task selectTask = getTask();
         if (!taskTitleField.getText().equals(selectTask.getTitle())) {
-            controller.controller.editTaskTitle(LoginView.LoginUser, selectTask, taskTitleField.getText());
+            Controller.controller.editTaskTitle(taskTitleField.getText());
         }
         if (!PriorityField.getText().equals(selectTask.getPriority()))
-            controller.controller.editTaskPriority(LoginView.LoginUser, selectTask, taskTitleField.getText());
+            Controller.controller.editTaskPriority(PriorityField.getPromptText());
         if (!descriptionField.getText().equals(selectTask.getDescription()))
-            controller.controller.editTaskDescription(LoginView.LoginUser, selectTask, taskTitleField.getText());
+            Controller.controller.editTaskDescription(descriptionField.getText());
         if (!deadlineFiled.getText().equals(selectTask.getDeadline()))
-            result = controller.controller.editTaskDeadline(LoginView.LoginUser, selectTask, taskTitleField.getText());
+            result = Controller.controller.editTaskDeadline(taskTitleField.getText());
         if (result == 1) {
             lblError.setText("New deadline is invalid!");
         } else

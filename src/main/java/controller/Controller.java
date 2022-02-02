@@ -169,6 +169,41 @@ public class Controller {
         inputStream.readUTF();
     }
 
+    public void setSelectedTeamForTask(String teamName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("set setSelectedTeamForTask --teamName %s --token %s", teamName, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public void editTaskTitle(String title) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task editTaskTitle --taskTitle %s --token %s", title, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public void editTaskPriority(String priority) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task editTaskPriority --taskPriority %s --token %s", priority, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public void editTaskDescription(String description) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task editTaskDescription --taskDescription %s --token %s", description, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int editTaskDeadline(String deadline) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task editTaskDeadline --taskDeadline %s --token %s", deadline, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
     public String getBoardFailedPercentage() throws IOException {
         outputStream.writeUTF("board BoardFailedPercentage --token "+token);
         outputStream.flush();
