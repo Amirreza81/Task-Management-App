@@ -1,6 +1,5 @@
 package view;
 
-import controller.LoggedController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,12 +22,9 @@ import java.util.Objects;
 
 public class ScoreBoardView {
     public AnchorPane pane;
-    private User user;
 
     @FXML
     public void initialize() {
-
-        user = LoggedController.getInstance().getLoggedInUser();
         ScoreBoardData.getAndSetDataFromUser();
         ObservableList<ScoreBoardData> list = FXCollections.observableArrayList(ScoreBoardData.getScoreBoardData());
         TableView<ScoreBoardData> tableView = new TableView<>();

@@ -1,6 +1,6 @@
 package view.BoardMenu;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -11,6 +11,7 @@ import model.Category;
 import model.Task;
 import model.User;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,15 +22,11 @@ public class BoardMenuTaskItem implements Initializable {
     public Button btnSelect;
     public Label lblTaskTitle;
     private Task selectTask;
-    private User user;
-    private Board board;
     private BoardMenuAddTaskPageView parent;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnSelect.setText("addTask");
-        user = LoggedController.getInstance().getLoggedInUser();
-        board = LoggedController.getInstance().getSelectedBoard();
         btnSelect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -40,13 +37,19 @@ public class BoardMenuTaskItem implements Initializable {
                 Optional<String> input = dialog.showAndWait();
                 if (input.isPresent()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    Category category = Category.getCategoryByName(board.getAllCategories(), dialog.getEditor().getText());
+                    Category category = Category.getCategoryByName
+                            (Controller.controller.getLoggedBoard().getAllCategories(), dialog.getEditor().getText());
                     if (category == null) {
                         alert.setAlertType(Alert.AlertType.ERROR);
                         alert.setContentText("invalid Category name");
                     }
-                    int response = controller.controller.boardAddTask
-                            (user, board.getTeam(), board.getBoardName(), Integer.toString(selectTask.getCreationId()));
+                    int response = 0;
+                    try {
+                        response = Controller.controller.boardAddTask
+                                (Integer.toString(selectTask.getCreationId()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if (response == 4) {
                         alert.setAlertType(Alert.AlertType.ERROR);
                         alert.setContentText("this task is already in board");
@@ -60,8 +63,12 @@ public class BoardMenuTaskItem implements Initializable {
                         alert.setContentText("nobody has assigned to this task");
                     }
                     if (response == 7) {
-                        controller.controller.forceCategory
-                                (user, board.getTeam(), dialog.getEditor().getText(), board.getBoardName(), selectTask.getTitle());
+                        try {
+                            Controller.controller.forceCategory
+                                    (dialog.getEditor().getText(), selectTask.getTitle());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         alert.setAlertType(Alert.AlertType.INFORMATION);
                         alert.setContentText("task added to board successfully!");
                     }

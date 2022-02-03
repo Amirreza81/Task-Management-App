@@ -1,6 +1,6 @@
 package view.BoardMenu;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import model.Category;
 import model.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CategoryItemView {
@@ -63,12 +64,9 @@ public class CategoryItemView {
         }
     }
 
-    public void handleDragDropping(DragEvent dragEvent) {
+    public void handleDragDropping(DragEvent dragEvent) throws IOException {
         String categoryName = dragEvent.getDragboard().getString();
-        controller.controller.changeColumn
-                (LoggedController.getInstance().getLoggedInUser()
-                        , LoggedController.getInstance().getSelectedBoard().getTeam()
-                        ,LoggedController.getInstance().getSelectedBoard().getBoardName(),categoryName,this.column);
+        Controller.controller.changeColumn(categoryName,this.column);
     }
 
     public void handleDragDone(DragEvent dragEvent) {

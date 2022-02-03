@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoggedController;
+import controller.Controller;
 import model.User;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class ScoreBoardData {
     }
     
     public static ArrayList<User> getSortedUsers() {
-        ArrayList<User> users = new ArrayList<>(LoggedController.getInstance().getLoggedTeam().getTeamMembers());
+        ArrayList<User> users = new ArrayList<>(Controller.controller.getLoggedTeam().getTeamMembers());
 //        System.out.println(users.size());
         Comparator<User> comparator = Comparator.comparingInt(User::getScore).reversed();
         users.sort(comparator);

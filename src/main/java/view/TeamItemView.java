@@ -39,7 +39,8 @@ public class TeamItemView implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    Controller.controller.setSelectedTeam(selectTeam);
+                    Controller.controller.setSelectedTeam(selectTeam.getTeamName());
+                    // ??
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

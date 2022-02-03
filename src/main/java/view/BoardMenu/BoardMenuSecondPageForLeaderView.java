@@ -1,7 +1,6 @@
 package view.BoardMenu;
 
 import controller.Controller;
-import controller.LoggedController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

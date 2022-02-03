@@ -1,6 +1,6 @@
 package view.BoardMenu;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -18,13 +18,9 @@ import java.util.ResourceBundle;
 public class InCategoryItemsView implements Initializable {
     public Button btnSelect;
     private Task task;
-    private User user;
-    private Board board;
     private CategoryItemView parentController;
     @FXML
     public void initialize(URL location, ResourceBundle resources){
-        user = LoggedController.getInstance().getLoggedInUser();
-        board = LoggedController.getInstance().getSelectedBoard();
         btnSelect.setStyle("-fx-background-color: #eecd26; ");
     }
     public void setTask(Task task){
@@ -39,8 +35,7 @@ public class InCategoryItemsView implements Initializable {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.get() == ButtonType.OK) confirmation = true;
         if(confirmation){
-            int response = controller.controller.goToNextCategory
-                    (user,board.getTeam(),board.getBoardName(),task.getTitle());
+            int response = Controller.controller.goToNextCategory(task.getTitle());
             if (response==0){
                 parentController.getParentController().response.setText("this task is not assigned to you so u cant move it");
             }

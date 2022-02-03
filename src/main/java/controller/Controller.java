@@ -370,7 +370,7 @@ public class Controller {
         return Integer.parseInt(result);
     }
 
-    public void setSelectedTeam(Team teamName) throws IOException {
+    public void setSelectedTeam(String teamName) throws IOException {
         outputStream.writeUTF(String.format
                 ("set setSelectedTeam --teamName %s --token %s", teamName, token));
         outputStream.flush();
@@ -469,4 +469,35 @@ public class Controller {
         outputStream.flush();
         inputStream.readUTF();
     }
+
+    public int boardAddTask(String id) throws IOException {
+        outputStream.writeUTF(String.format
+                ("board --add %s --token %s",id ,token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public void forceCategory(String categoryName, String title) throws IOException {
+        outputStream.writeUTF(String.format
+                ("board --force --category %s --task %s --token %s",categoryName,title ,token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public void changeColumn(String categoryName, int column) throws IOException {
+        outputStream.writeUTF(String.format
+                ("board --category %s --column %s --token %s",categoryName, column,token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int goToNextCategory(String title) throws IOException {
+        outputStream.writeUTF(String.format
+                ("board --category next --task %s --token %s",title ,token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
 }

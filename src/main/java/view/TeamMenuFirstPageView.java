@@ -1,6 +1,6 @@
 package view;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,15 +28,13 @@ public class TeamMenuFirstPageView {
     public Label response;
     public AnchorPane pane;
 
-    private User user;
     private TableView<Team> tableView;
     public void initialize() {
-        user = LoggedController.getInstance().getLoggedInUser();
         makeBoardsTable();
     }
     private void makeBoardsTable() {
         if(tableView!=null)pane.getChildren().remove(tableView);
-        ObservableList<Team> list = FXCollections.observableArrayList(user.getUserTeams());
+        ObservableList<Team> list = FXCollections.observableArrayList(Controller.controller.getLoggedInUser().getUserTeams());
         tableView = new TableView<>();
         tableView.setLayoutX(50);
         tableView.setLayoutY(58.0);
@@ -52,12 +50,12 @@ public class TeamMenuFirstPageView {
 
     public void loginTeam(ActionEvent actionEvent) throws IOException {
         String teamNameText = teamName.getText();
-        Team team = Team.getTeamByName(teamNameText,user.getUserTeams());
+        Team team = Team.getTeamByName(teamNameText,Controller.controller.getLoggedInUser().getUserTeams());
         if(team==null){
             response.setText("there is no team with this name");
             return;
         }
-        LoggedController.getInstance().setLoggedTeam(team);
+        Controller.controller.setSelectedTeam(teamNameText);
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource
                 ("/fxml/TeamMenuSecondPage.fxml")));
         Scene scene = new Scene(parent);
@@ -67,7 +65,7 @@ public class TeamMenuFirstPageView {
     }
 
     public void back(ActionEvent actionEvent) throws IOException {
-        if (user.getRole().equals("Leader")){
+        if (Controller.controller.getLoggedInUser().getRole().equals("Leader")){
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
         }
