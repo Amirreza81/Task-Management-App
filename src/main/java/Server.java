@@ -14,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
@@ -75,13 +76,11 @@ public class Server {
     }
 
     private String recognizeCommand(String input) throws ParseException {
-        String[] parts = input.split(" ");
-        Matcher matcher;
         if (input.startsWith("user")) {
             return recognizeRegisterLoginCommand(input);
         } else if (input.startsWith("get")) {
             return recognizeGetObjectsCommand(input);
-        } else if (input.startsWith("profile")) {
+        } else if (input.startsWith("Profile")) {
             return recognizeProfileMenuCommand(input);
         } else if (input.startsWith("board")) {
             return recognizeBoardMenuCommand(input);
@@ -141,7 +140,7 @@ public class Server {
                 ("set setSelectedTask --taskTitle ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController.getInstance(matcher.group(2)).setSelectedTask
                     (Task.getTaskByTitle
-                            (LoggedController.getInstance(matcher.group(2)).getLoggedInUser().getAllTasksForUser(),
+                            (LoggedController.getInstance(matcher.group(2)).getSelectedTeamForTask().getAllTasks(),
                                     matcher.group(1)));
             return "successful";
         } else if ((matcher = Controller.controller.getCommandMatcher
@@ -150,10 +149,14 @@ public class Server {
                     (Controller.controller.findTeam(matcher.group(1)));
             return "successful";
         } else if ((matcher = Controller.controller.getCommandMatcher
-                ("set setSelectedBoard --boardName ([^ ]+) --token %s", input)).matches()) {
+                ("set setSelectedBoard --boardName ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController.getInstance(matcher.group(2)).setSelectedBoard(Board.getBoardByName(
                     LoggedController.getInstance(matcher.group(2)).getLoggedTeam().getBoards(), matcher.group(1)));
             return "successful";
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("set setLoggedTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setLoggedTeam(Controller.controller.findTeam(matcher.group(1)));
+            return "successfully";
         }
         return "-1";
     }
@@ -321,7 +324,7 @@ public class Server {
         } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --all --token (.*)", input)).matches()) {
             int response = Controller.controller.sendToAll(matcher.group(1), LoggedController.getInstance(matcher.group(2)).getLoggedInUser());
             return "" + response;
-        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --user ([^ ]+) --token %s", input)).matches()) {
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --user ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.sendNotificationForUser(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
             return "" + response;
         }
@@ -366,6 +369,12 @@ public class Server {
             JsonObjectController<Team> jsonObjectController = new JsonObjectController<Team>();
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getSelectedTeam());
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("get allUsers --token  (.*)"
+                        , input)).matches()) {
+            JsonObjectController<ArrayList<User>> jsonObjectController = new JsonObjectController<ArrayList<User>>();
+            return jsonObjectController.createJsonObject
+                    (User.getUsers());
         }
         return "-1";
 

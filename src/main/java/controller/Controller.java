@@ -465,8 +465,8 @@ public class Controller {
             if (!task.getAssignedUser().contains(user))
                 return 0;
         }
-        if (Date.getTimeBetween(Date.getNow(), task.getDeadline()) < 0)
-            return 4;
+//        if (Date.getTimeBetween(Date.getNow(), task.getDeadline()) < 0)
+//            return 4;
         int index = removeFromCategories(task, board);
         if (index == -1)
             return 5;
