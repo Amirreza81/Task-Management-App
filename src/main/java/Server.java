@@ -57,7 +57,8 @@ public class Server {
         }).start();
     }
 
-    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream) throws IOException, ParseException {
+    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream)
+            throws IOException, ParseException {
         while (true) {
             String input;
             try {
@@ -100,22 +101,28 @@ public class Server {
 
     private String recognizeTeamCommand(String input) {
         Matcher matcher;
-        if ((matcher = Controller.controller.getCommandMatcher("team creatTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("team creatTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
             int result = Controller.controller.creatTeam(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
                     matcher.group(1));
             return "" + result;
-        } else if ((matcher = Controller.controller.getCommandMatcher("team addMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("team addMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
             int result = Controller.controller.addMember(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
                     LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
                     matcher.group(1));
             return "" + result;
-        } else if ((matcher = Controller.controller.getCommandMatcher("team deleteMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
-            int result = Controller.controller.deleteMember(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("team deleteMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.deleteMember
+                    (LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
                     LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
                     matcher.group(1));
             return "" + result;
-        } else if ((matcher = Controller.controller.getCommandMatcher("team suspendMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
-            int result = Controller.controller.suspendMember(LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("team suspendMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.suspendMember
+                    (LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
                     LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
                     matcher.group(1));
             return "" + result;
@@ -125,14 +132,27 @@ public class Server {
 
     private String recognizeSetObjectCommand(String input) {
         Matcher matcher;
-        if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTeamForTask --teamName ([^ ]+) --token (.*)", input)).matches()) {
-            LoggedController.getInstance(matcher.group(2)).setSelectedTeamForTask(Controller.controller.findTeam(matcher.group(1)));
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("set setSelectedTeamForTask --teamName ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedTeamForTask
+                    (Controller.controller.findTeam(matcher.group(1)));
             return "successful";
-        } else if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTask --taskTitle ([^ ]+) --token (.*)", input)).matches()) {
-            LoggedController.getInstance(matcher.group(2)).setSelectedTask(Task.getTaskByTitle(LoggedController.getInstance(matcher.group(2)).getLoggedInUser().getAllTasksForUser(), matcher.group(1)));
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("set setSelectedTask --taskTitle ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedTask
+                    (Task.getTaskByTitle
+                            (LoggedController.getInstance(matcher.group(2)).getLoggedInUser().getAllTasksForUser(),
+                                    matcher.group(1)));
             return "successful";
-        } else if ((matcher = Controller.controller.getCommandMatcher("set setSelectedTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
-            LoggedController.getInstance(matcher.group(2)).setSelectedTeam(Controller.controller.findTeam(matcher.group(1)));
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("set setSelectedTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedTeam
+                    (Controller.controller.findTeam(matcher.group(1)));
+            return "successful";
+        }  else if ((matcher = Controller.controller.getCommandMatcher
+                ("set setSelectedBoard --boardName ([^ ]+) --token %s", input)).matches()) {
+            LoggedController.getInstance(matcher.group(2)).setSelectedBoard(Board.getBoardByName(
+                    LoggedController.getInstance(matcher.group(2)).getLoggedTeam().getBoards(),matcher.group(1)));
             return "successful";
         }
         return "-1";
@@ -186,16 +206,24 @@ public class Server {
 
     private String recognizeBoardMenuCommand(String input) throws ParseException {
         Matcher matcher;
-        if ((matcher = Controller.controller.getCommandMatcher("board updateFailed --token (.*)", input)).matches()) {
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("board updateFailed --token (.*)", input)).matches()) {
             Controller.controller.updateFailed(LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
             return "successful";
-        }
-        if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("board BoardFailedPercentage --token (.*)", input)).matches()) {
             return "" + Controller.controller.getBoardFailedPercentage
                     (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("board --new --name ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController loggedController = LoggedController.getInstance(matcher.group(2));
+            return "" + Controller.controller.makeBoard(
+                    loggedController.getLoggedInUser(),loggedController.getLoggedTeam(),matcher.group(1));
         }
+
+
         return "-1";
+
     }
 
     private String recognizeProfileMenuCommand(String input) {
