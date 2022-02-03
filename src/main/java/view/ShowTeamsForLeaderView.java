@@ -65,7 +65,6 @@ public class ShowTeamsForLeaderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
-        LoggedController.getInstance().setSelectedTeam(null);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }

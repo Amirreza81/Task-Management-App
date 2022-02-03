@@ -420,4 +420,19 @@ public class Controller {
             return null;
         }
     }
+
+    public void setSelectedBoard(String boardNameText) throws IOException {
+        outputStream.writeUTF(String.format
+                ("set setSelectedBoard --boardName %s --token %s", boardNameText, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int makeBoard(String boardNameText) throws IOException {
+        outputStream.writeUTF(String.format
+                ("board --new --name %s --token %s", boardNameText, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
 }
