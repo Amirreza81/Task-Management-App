@@ -10,6 +10,7 @@ import model.Board;
 import model.Task;
 import model.User;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -30,7 +31,7 @@ public class InCategoryItemsView implements Initializable {
         this.task = task;
         btnSelect.setText(task.getTitle());
     }
-    public void goToNextCategory(){
+    public void goToNextCategory() throws IOException {
         boolean confirmation = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("confirmation");

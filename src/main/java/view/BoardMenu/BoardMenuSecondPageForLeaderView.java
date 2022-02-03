@@ -34,13 +34,10 @@ public class BoardMenuSecondPageForLeaderView {
     public Button addCategoryBtn;
     public Button addTaskBtn;
     public Label Completion;
-    private User user;
-    private Board board;
     private TableView<Task> tableView;
 
-    public void initialize() {
-        user = LoggedController.getInstance().getLoggedInUser();
-        if (user.getRole().equals("Member")){
+    public void initialize() throws IOException {
+        if (Controller.controller.getLoggedInUser().getRole().equals("Member")){
             pane.getChildren().remove(categoryName);
             pane.getChildren().remove(remove);
             pane.getChildren().remove(addCategoryBtn);
@@ -52,7 +49,7 @@ public class BoardMenuSecondPageForLeaderView {
     }
 
     public void updateHBOX() {
-        if(board.isCreated())condition.setText("board construction is done");
+        if(Controller.controller.getLoggedBoard().isCreated())condition.setText("board construction is done");
         hBox.getChildren().clear();
         Board board = Controller.controller.getLoggedBoard();
         ArrayList<Category> categories  = board.getAllCategories();
@@ -71,9 +68,9 @@ public class BoardMenuSecondPageForLeaderView {
             }
         }
     }
-    public void makeDoneColumn() {
+    public void makeDoneColumn() throws IOException {
         if(tableView!=null)pane.getChildren().remove(tableView);
-        ObservableList<Task> list = FXCollections.observableArrayList(board.getDone());
+        ObservableList<Task> list = FXCollections.observableArrayList(Controller.controller.getLoggedBoard().getDone());
         tableView = new TableView<>();
         tableView.setLayoutX(286);
         tableView.setLayoutY(52);
@@ -87,7 +84,7 @@ public class BoardMenuSecondPageForLeaderView {
         tableView.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/CSS/Table.css")).toExternalForm());
         pane.getChildren().add(tableView);
         Completion.setText("board completion percentage : "+
-                controller.controller.getBoardCompletionPercentage(board));
+                Controller.controller.getBoardCompletionPercentage());
     }
 
     public void removeBoard(ActionEvent actionEvent) throws IOException {
@@ -98,7 +95,7 @@ public class BoardMenuSecondPageForLeaderView {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.get() == ButtonType.OK) confirmation = true;
         if (confirmation) {
-            int controllerResponse = controller.controller.removeBoard(user, board.getTeam(), board.getBoardName());
+            Controller.controller.removeBoard();
             response.setText("board removed successfully");
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource
                     ("/fxml/BoardMenuFirstPage.fxml")));
@@ -108,12 +105,12 @@ public class BoardMenuSecondPageForLeaderView {
             stage.show();
         }
     }
-    public void addCategory(ActionEvent actionEvent) {
+    public void addCategory(ActionEvent actionEvent) throws IOException {
         String categoryNameText = categoryName.getText();
-        int response = controller.controller.addCategory(user,board.getTeam(),board.getBoardName(),categoryNameText);
+        int response = Controller.controller.addCategory(categoryNameText);
         if(response==2) this.response.setText("already exist a category with this name");
         if(response==3) this.response.setText("category successfully added");
-        controller.controller.boardDone(user,board.getTeam(),board.getBoardName());
+        Controller.controller.boardDone();
         updateHBOX();
     }
     public void addTask(ActionEvent actionEvent) throws IOException {

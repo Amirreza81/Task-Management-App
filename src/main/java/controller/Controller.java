@@ -435,4 +435,38 @@ public class Controller {
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
     }
+
+    public int updateDeadline(String title, String text) throws IOException {
+        outputStream.writeUTF(String.format
+                ("^board --open --task %s --deadline %s --token %s", title,text,token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public String getBoardCompletionPercentage() throws IOException {
+        outputStream.writeUTF("board BoardCompletionPercentage --token " + token);
+        outputStream.flush();
+        return inputStream.readUTF();
+    }
+
+    public void removeBoard() throws IOException {
+        outputStream.writeUTF("board removeBoard --token " + token);
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int addCategory(String categoryNameText) throws IOException {
+        outputStream.writeUTF(String.format
+                ("board --new  --category %S --token %s", categoryNameText,token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public void boardDone() throws IOException {
+        outputStream.writeUTF("board --done --token " + token);
+        outputStream.flush();
+        inputStream.readUTF();
+    }
 }

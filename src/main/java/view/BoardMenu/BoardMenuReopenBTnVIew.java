@@ -1,6 +1,6 @@
 package view.BoardMenu;
 
-import controller.LoggedController;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -25,8 +25,6 @@ public class BoardMenuReopenBTnVIew implements Initializable {
     public Button btnSelect;
     public Label lblTaskTitle;
     private Task selectTask;
-    private User user;
-    private Board board;
     private BoardMenuFailedTasksPageView parent;
 
     @Override
@@ -34,9 +32,7 @@ public class BoardMenuReopenBTnVIew implements Initializable {
 
         btnSelect.setStyle("-fx-background-color: #ee4f4f; ");
         btnSelect.setText("reopen");
-        user = LoggedController.getInstance().getLoggedInUser();
-        if (user.getRole().equals("Member"))pane.getChildren().remove(btnSelect);
-        board = LoggedController.getInstance().getSelectedBoard();
+        if (Controller.controller.getLoggedInUser().getRole().equals("Member"))pane.getChildren().remove(btnSelect);
         btnSelect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -47,8 +43,13 @@ public class BoardMenuReopenBTnVIew implements Initializable {
                 Optional<String> input = dialog.showAndWait();
                 if (input.isPresent()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    int response = controller.controller.updateDeadline(user,board.getTeam(),selectTask.getTitle(),
-                            dialog.getEditor().getText(),board.getBoardName());
+                    int response = 0;
+                    try {
+                        response = Controller.controller.updateDeadline(selectTask.getTitle(),
+                                dialog.getEditor().getText());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if (response == 2) {
                         alert.setAlertType(Alert.AlertType.ERROR);
                         alert.setContentText("board construction is not done");
