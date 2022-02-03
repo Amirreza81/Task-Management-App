@@ -95,9 +95,9 @@ public class CreateTeamForLeaderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        for (User member : User.getUsers()) {
+        for (User member : Controller.controller.getAllUsers()) {
             members.getItems().add(member.getUserName());
         }
-        members.setValue(User.getUsers().get(0).getUserName());
+        members.setValue(Controller.controller.getAllUsers().get(0).getUserName());
     }
 }

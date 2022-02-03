@@ -11,7 +11,7 @@ public class JsonObjectController<T> {
 
         public T createJsonObject(String object){
             return new YaGson().fromJson(object,
-                    type);;
+                    type);
         }
 
 }

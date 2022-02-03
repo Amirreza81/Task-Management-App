@@ -32,7 +32,7 @@ public class TaskListForLeaderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<Task> tasks = Controller.controller.getLoggedInUser().getAllTasksForUser();
+        ArrayList<Task> tasks = Controller.controller.getSelectedTeamForTask().getAllTasks();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {
             try {

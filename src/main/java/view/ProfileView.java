@@ -133,7 +133,7 @@ public class ProfileView  {
             alert.showAndWait();
             return;
         }
-        int response = Controller.controller.changePassword(Controller.controller.getLoggedInUser(), currentPassword.getText(), newPassword.getText());
+        int response = Controller.controller.changePassword(currentPassword.getText(), newPassword.getText());
         if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");

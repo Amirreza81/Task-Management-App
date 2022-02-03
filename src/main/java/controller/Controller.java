@@ -1,5 +1,6 @@
 package controller;
 
+import com.gilecode.yagson.com.google.gson.reflect.TypeToken;
 import model.Board;
 import model.Task;
 import model.Team;
@@ -9,6 +10,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,7 +86,7 @@ public class Controller {
             outputStream.writeUTF("get SelectedTeamForTask --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
-            JsonObjectController jsonObjectController = new JsonObjectController(Task.class);
+            JsonObjectController jsonObjectController = new JsonObjectController(Team.class);
             return (Team) jsonObjectController.createJsonObject(result);
         } catch (IOException e) {
             return null;
@@ -147,7 +150,7 @@ public class Controller {
         }
     }
 
-    public int changePassword(User loggedInUser, String oldPassword, String newPassword) {
+    public int changePassword(String oldPassword, String newPassword) {
         try {
             outputStream.writeUTF(String.format
                     ("Profile --change --oldPassword %s --newPassword %s --token %s"
@@ -159,6 +162,7 @@ public class Controller {
             String response = matcher.group(1);
             return Integer.parseInt(response);
         } catch (IOException e) {
+            System.out.println("Error in ....");
             return -1;
         }
     }
@@ -421,6 +425,18 @@ public class Controller {
         }
     }
 
+    public ArrayList<User> getAllUsers(){
+        try {
+            outputStream.writeUTF("get allUsers --token " + token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(new TypeToken<List<User>>(){}.getClass());
+            return (ArrayList<User>) jsonObjectController.createJsonObject(result);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public void setSelectedBoard(String boardNameText) throws IOException {
         outputStream.writeUTF(String.format
                 ("set setSelectedBoard --boardName %s --token %s", boardNameText, token));
@@ -497,7 +513,14 @@ public class Controller {
                 ("board --category next --task %s --token %s",title ,token));
         outputStream.flush();
         String result = inputStream.readUTF();
+        System.out.println(result);
         return Integer.parseInt(result);
     }
 
+    public void setLoggedTeam(String teamNameText) throws IOException {
+        outputStream.writeUTF(String.format
+                ("set setLoggedTeam --teamName %s --token %s", teamNameText, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
 }

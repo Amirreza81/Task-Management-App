@@ -55,7 +55,7 @@ public class TeamMenuFirstPageView {
             response.setText("there is no team with this name");
             return;
         }
-        Controller.controller.setSelectedTeam(teamNameText);
+        Controller.controller.setLoggedTeam(teamNameText);
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource
                 ("/fxml/TeamMenuSecondPage.fxml")));
         Scene scene = new Scene(parent);

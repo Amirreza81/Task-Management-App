@@ -32,6 +32,7 @@ public class BoardMenuFailedTasksPageView {
 
     }
     public void makeTasksVbox() throws ParseException, IOException {
+        Controller.controller.updateFailed();
         vTaskItem.getChildren().clear();
         Board board = Controller.controller.getLoggedBoard();
         Controller.controller.updateFailed();
