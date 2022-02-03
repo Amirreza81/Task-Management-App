@@ -116,15 +116,15 @@ public class Server {
                 ("team deleteMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
             int result = Controller.controller.deleteMember
                     (LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
-                    LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
-                    matcher.group(1));
+                            LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
+                            matcher.group(1));
             return "" + result;
         } else if ((matcher = Controller.controller.getCommandMatcher
                 ("team suspendMember --memberName ([^ ]+) --token (.*)", input)).matches()) {
             int result = Controller.controller.suspendMember
                     (LoggedController.getInstance(matcher.group(2)).getLoggedInUser(),
-                    LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
-                    matcher.group(1));
+                            LoggedController.getInstance(matcher.group(2)).getSelectedTeam(),
+                            matcher.group(1));
             return "" + result;
         }
         return "-1";
@@ -149,10 +149,10 @@ public class Server {
             LoggedController.getInstance(matcher.group(2)).setSelectedTeam
                     (Controller.controller.findTeam(matcher.group(1)));
             return "successful";
-        }  else if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("set setSelectedBoard --boardName ([^ ]+) --token %s", input)).matches()) {
             LoggedController.getInstance(matcher.group(2)).setSelectedBoard(Board.getBoardByName(
-                    LoggedController.getInstance(matcher.group(2)).getLoggedTeam().getBoards(),matcher.group(1)));
+                    LoggedController.getInstance(matcher.group(2)).getLoggedTeam().getBoards(), matcher.group(1)));
             return "successful";
         }
         return "-1";
@@ -218,8 +218,7 @@ public class Server {
                 ("board BoardCompletionPercentage --token (.*)", input)).matches()) {
             return "" + Controller.controller.getBoardCompletionPercentage
                     (LoggedController.getInstance(matcher.group(1)).getSelectedBoard());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("board removeBoard --token (.*)", input)).matches()) {
             LoggedController loggedController = LoggedController.getInstance(matcher.group(1));
             return "" + Controller.controller.removeBoard(loggedController.getLoggedInUser(),
@@ -229,26 +228,24 @@ public class Server {
                 ("board --done --token (.*)", input)).matches()) {
             LoggedController loggedController = LoggedController.getInstance(matcher.group(1));
             return "" + Controller.controller.boardDone(loggedController.getLoggedInUser(),
-                    loggedController.getSelectedBoard().getTeam(),loggedController.getSelectedBoard().getBoardName());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+                    loggedController.getSelectedBoard().getTeam(), loggedController.getSelectedBoard().getBoardName());
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("board --new --name ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController loggedController = LoggedController.getInstance(matcher.group(2));
             return "" + Controller.controller.makeBoard(
-                    loggedController.getLoggedInUser(),loggedController.getLoggedTeam(),matcher.group(1));
+                    loggedController.getLoggedInUser(), loggedController.getLoggedTeam(), matcher.group(1));
         } else if ((matcher = Controller.controller.getCommandMatcher
                 ("^board --open --task ([^ ]+) --deadline ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController loggedController = LoggedController.getInstance(matcher.group(3));
             return "" + Controller.controller.updateDeadline(loggedController.getLoggedInUser()
-                    ,loggedController.getSelectedBoard().getTeam(),
-                    matcher.group(1),matcher.group(2),loggedController.getSelectedBoard().getBoardName());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+                    , loggedController.getSelectedBoard().getTeam(),
+                    matcher.group(1), matcher.group(2), loggedController.getSelectedBoard().getBoardName());
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("^board --open --task ([^ ]+) --deadline ([^ ]+) --token (.*)$", input)).matches()) {
             LoggedController loggedController = LoggedController.getInstance(matcher.group(3));
             return "" + Controller.controller.updateDeadline(loggedController.getLoggedInUser()
-                    ,loggedController.getSelectedBoard().getTeam(),
-                    matcher.group(1),matcher.group(2),loggedController.getSelectedBoard().getBoardName());
+                    , loggedController.getSelectedBoard().getTeam(),
+                    matcher.group(1), matcher.group(2), loggedController.getSelectedBoard().getBoardName());
         } else if ((matcher = Controller.controller.getCommandMatcher
                 ("^board --new  --category ([^ ]+) --token (.*)$", input)).matches()) {
             LoggedController loggedController = LoggedController.getInstance(matcher.group(2));
@@ -256,7 +253,35 @@ public class Server {
                     loggedController.getSelectedBoard().getTeam(),
                     loggedController.getSelectedBoard().getBoardName(),
                     matcher.group(1));
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("^board --add ([^ ]+) --token (.*)$", input)).matches()) {
+            LoggedController loggedController = LoggedController.getInstance(matcher.group(2));
+            return "" + Controller.controller.boardAddTask(loggedController.getLoggedInUser(),
+                    loggedController.getSelectedBoard().getTeam(),
+                    loggedController.getSelectedBoard().getBoardName(), matcher.group(1));
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("^board --force --category ([^ ]+) --task ([^ ]+) --token (.*)$", input)).matches()) {
+            LoggedController loggedController = LoggedController.getInstance(matcher.group(3));
+            return "" + Controller.controller.forceCategory(loggedController.getLoggedInUser(),
+                    loggedController.getSelectedBoard().getTeam(), matcher.group(1),
+                    loggedController.getSelectedBoard().getBoardName(), matcher.group(2));
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("^board --category ([^ ]+) --column ([^ ]+) --token (.*)$", input)).matches()) {
+            LoggedController loggedController = LoggedController.getInstance(matcher.group(3));
+            return "" + Controller.controller.changeColumn(loggedController.getLoggedInUser(),
+                    loggedController.getSelectedBoard().getTeam(),
+                    loggedController.getSelectedBoard().getBoardName(),
+                    matcher.group(1), Integer.parseInt(matcher.group(2)));
+        } else if ((matcher = Controller.controller.getCommandMatcher
+                ("board --category next --task ([^ ]+) --token (.*)", input)).matches()) {
+            LoggedController loggedController = LoggedController.getInstance(matcher.group(2));
+            return "" + Controller.controller.goToNextCategory(loggedController.getLoggedInUser(),
+                    loggedController.getSelectedBoard().getTeam(), loggedController.getSelectedBoard().getBoardName(),
+                    matcher.group(1));
         }
+        
+
+
         return "-1";
 
     }
