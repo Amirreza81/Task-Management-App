@@ -430,8 +430,9 @@ public class Controller {
             outputStream.writeUTF("get allUsers --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
-            JsonObjectController jsonObjectController = new JsonObjectController(new TypeToken<List<User>>(){}.getClass());
-            return (ArrayList<User>) jsonObjectController.createJsonObject(result);
+            JsonObjectController jsonObjectController = new JsonObjectController(new TypeToken<List<User>>() {
+            }.getType());
+            return (ArrayList<User>) jsonObjectController.createJsonObject2(result);
         } catch (IOException e) {
             return null;
         }
