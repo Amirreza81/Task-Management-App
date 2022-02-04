@@ -370,7 +370,7 @@ public class Server {
             return jsonObjectController.createJsonObject
                     (LoggedController.getInstance(matcher.group(1)).getSelectedTeam());
         } else if ((matcher = Controller.controller.getCommandMatcher
-                ("get allUsers --token  (.*)"
+                ("get allUsers --token (.*)"
                         , input)).matches()) {
             JsonObjectController<ArrayList<User>> jsonObjectController = new JsonObjectController<ArrayList<User>>();
             return jsonObjectController.createJsonObject
