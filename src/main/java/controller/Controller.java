@@ -1170,4 +1170,12 @@ public class Controller {
         return 1;
     }
 
+    public int hiddenUser(String username) {
+        if (User.getUserByUsername(username).isHidden()){
+            User.getUserByUsername(username).setHidden(false);
+        } else {
+            User.getUserByUsername(username).setHidden(true);
+        }
+        return 1;
+    }
 }

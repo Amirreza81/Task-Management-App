@@ -330,6 +330,9 @@ public class Server {
         } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --user ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.sendNotificationForUser(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
             return "" + response;
+        }else if ((matcher = Controller.controller.getCommandMatcher("admin --hidden --username ([^ ]+)", input)).matches()) {
+            int response = Controller.controller.hiddenUser(matcher.group(1));
+            return "" + response;
         }
         return "-1";
     }
