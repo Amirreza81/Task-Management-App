@@ -8,6 +8,5 @@ public class Main {
     private static void runServer() {
         Server server = Server.getInstance();
         server.run();
-        JsonController.getInstance().updateJson();
     }
 }

@@ -157,6 +157,9 @@ public class Server {
                 ("set setLoggedTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController.getInstance(matcher.group(2)).setLoggedTeam(Controller.controller.findTeam(matcher.group(1)));
             return "successfully";
+        }else if(input.equals("set Data")){
+            JsonController.getInstance().updateJson();
+            return "successful";
         }
         return "-1";
     }
