@@ -16,6 +16,7 @@ public class User {
     private String password;
     private String email;
     private String role = "Member";
+    private boolean isHidden = true;
     private int score = 0;
     private ArrayList<Log> allLogs;
     private ArrayList<Task> allTasksForUser;
@@ -39,6 +40,14 @@ public class User {
         this.notifications = new ArrayList<>();
         this.userTeams = new ArrayList<>();
         this.joiningDate = new HashMap<>();
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
     }
 
     public static User getUserByUsername(String userName) {
