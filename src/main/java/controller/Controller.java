@@ -543,4 +543,11 @@ public class Controller {
         outputStream.flush();
         inputStream.readUTF();
     }
+
+    public int hiddenUser(String username) throws IOException {
+        outputStream.writeUTF(String.format("admin --hidden --username %s", username));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
 }

@@ -21,6 +21,7 @@ public class Team {
     private ChatRoom chatRoom;
     private ArrayList<Task> allTasks;
     private ArrayList<Notification> notifications;
+    private ArrayList<String> invitedFriends;
     private Date creationDate;
     private HashMap<User, Date> joiningDateForMembers;
 
@@ -42,7 +43,7 @@ public class Team {
         teamLeader.getJoiningDate().put(this, this.creationDate);
         teamLeader.getUserTeams().add(this);
         this.scoreboard = new Scoreboard(this);
-
+        this.invitedFriends = new ArrayList<>();
     }
 
     public static Team getTeamByName(String teamName, ArrayList<Team> teams) {

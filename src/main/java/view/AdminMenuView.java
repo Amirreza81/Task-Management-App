@@ -62,6 +62,9 @@ public class AdminMenuView {
     public Button sendToUser;
     public TextField nameOfTeam;
     public TextField nameOfUser;
+    public Button hiddenUser;
+    public Label status;
+    public Label statusField;
 
 
     public void goToUsers(ActionEvent actionEvent) throws IOException {
@@ -128,6 +131,11 @@ public class AdminMenuView {
                 foundEmail.setText(user.getEmail());
                 foundRole.setText(user.getRole());
                 foundScore.setText(Integer.toString(user.getScore()));
+                if (user.isHidden()){
+                    statusField.setText("Hidden");
+                } else {
+                    statusField.setText("Visible");
+                }
             }
         }
     }
@@ -312,5 +320,15 @@ public class AdminMenuView {
     public void goToAdminPage4(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminMenu.fxml"));
         ((Stage) back4.getScene().getWindow()).setScene(new Scene(root));
+    }
+
+    public void hiddenUser(ActionEvent actionEvent) throws IOException {
+        int response = Controller.controller.hiddenUser(findUser.getText());
+        if (response == 1){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setContentText(user.getUserName() + " hidden successfully!");
+            alert.showAndWait();
+        }
     }
 }

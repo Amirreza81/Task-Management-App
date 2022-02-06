@@ -12,8 +12,7 @@
             <Font name="System Bold" size="12.5" />
          </font>
       </Button>
-      <TextField fx:id="currentUsername" alignment="CENTER" layoutX="58.0" layoutY="63.0" prefHeight="27.0" prefWidth="203.0" promptText="Current Username" style="-fx-border-color: #cc0000;" />
-      <TextField fx:id="newUsername" alignment="CENTER" layoutX="300.0" layoutY="63.0" prefHeight="27.0" prefWidth="210.0" promptText="New Username" style="-fx-border-color: #cc0000;" />
+      <TextField fx:id="newUsername" alignment="CENTER" layoutX="54.0" layoutY="57.0" prefHeight="27.0" prefWidth="210.0" promptText="New Username" style="-fx-border-color: #cc0000;" />
       <TextField fx:id="currentPassword" alignment="CENTER" layoutX="58.0" layoutY="194.0" prefHeight="27.0" prefWidth="203.0" promptText="Current Password" style="-fx-border-color: #cc0000;" />
       <TextField fx:id="newPassword" alignment="CENTER" layoutX="303.0" layoutY="194.0" prefHeight="27.0" prefWidth="203.0" promptText="New Password" style="-fx-border-color: #cc0000;" />
       <Button fx:id="changePassword" alignment="CENTER" layoutX="58.0" layoutY="240.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="27.0" prefWidth="167.0" style="-fx-background-color: #cc0000; -fx-background-radius: 20;" text="Change Password" textFill="WHITE">

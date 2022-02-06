@@ -25,7 +25,7 @@
         </Label>
       <Label fx:id="logs" alignment="TOP_LEFT" layoutX="32.0" layoutY="56.0" prefHeight="260.0" prefWidth="544.0" style="-fx-background-color: white; -fx-border-color: #cc0000;" text="Logs">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <ScrollBar layoutX="562.0" layoutY="56.0" orientation="VERTICAL" prefHeight="260.0" prefWidth="14.0" />

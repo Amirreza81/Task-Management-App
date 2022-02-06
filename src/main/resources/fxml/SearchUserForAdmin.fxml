@@ -8,39 +8,39 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #949292;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AdminMenuView">
     <children>
-        <Label fx:id="usernameButton" alignment="CENTER" layoutX="31.0" layoutY="131.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Username" textFill="WHITE">
+        <Label fx:id="usernameButton" alignment="CENTER" layoutX="31.0" layoutY="101.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Username" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Label fx:id="emailButton" alignment="CENTER" layoutX="31.0" layoutY="164.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Emial" textFill="WHITE">
+        <Label fx:id="emailButton" alignment="CENTER" layoutX="31.0" layoutY="136.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Emial" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Label fx:id="roleButton" alignment="CENTER" layoutX="31.0" layoutY="200.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Role" textFill="WHITE">
+        <Label fx:id="roleButton" alignment="CENTER" layoutX="31.0" layoutY="167.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Role" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Label fx:id="scoreButton" alignment="CENTER" layoutX="31.0" layoutY="238.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Score" textFill="WHITE">
+        <Label fx:id="scoreButton" alignment="CENTER" layoutX="31.0" layoutY="200.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Score" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Label fx:id="foundUsername" alignment="CENTER" layoutX="190.0" layoutY="130.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
+        <Label fx:id="foundUsername" alignment="CENTER" layoutX="190.0" layoutY="100.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-        <Label fx:id="foundEmail" alignment="CENTER" layoutX="190.0" layoutY="163.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
+        <Label fx:id="foundEmail" alignment="CENTER" layoutX="190.0" layoutY="135.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-        <Label fx:id="foundRole" alignment="CENTER" layoutX="190.0" layoutY="199.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
+        <Label fx:id="foundRole" alignment="CENTER" layoutX="190.0" layoutY="166.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-        <Label fx:id="foundScore" alignment="CENTER" layoutX="190.0" layoutY="237.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
+        <Label fx:id="foundScore" alignment="CENTER" layoutX="190.0" layoutY="199.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
@@ -65,5 +65,20 @@
          </font>
       </Button>
       <TextField fx:id="newRole" alignment="CENTER" layoutX="319.0" layoutY="332.0" promptText="New Role" style="-fx-border-color: #cc0000;" />
+      <Button fx:id="hiddenUser" layoutX="319.0" layoutY="287.0" mnemonicParsing="false" onAction="#hiddenUser" prefHeight="26.0" prefWidth="260.0" style="-fx-background-color: #cc0000; -fx-background-radius: 20;" text="Hidden/Visible" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Label fx:id="status" alignment="CENTER" layoutX="33.0" layoutY="231.0" prefHeight="18.0" prefWidth="134.0" style="-fx-background-color: #cc0000;" text="Status" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="statusField" alignment="CENTER" layoutX="190.0" layoutY="230.0" prefHeight="19.0" prefWidth="392.0" style="-fx-border-color: #cc0000; -fx-background-color: white;" textFill="#cc0000">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
