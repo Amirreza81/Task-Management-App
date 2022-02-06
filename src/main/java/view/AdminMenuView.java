@@ -87,7 +87,7 @@ public class AdminMenuView {
     public void showListOfUsers(ActionEvent actionEvent) {
         ArrayList<String> informationOfUser = new ArrayList<>();
         int rank = 1;
-        for (User user : User.getUsers()) {
+        for (User user : Controller.controller.getAllUsers()) {
             informationOfUser.add(rank + ". " + user.getUserName() + "\t\t" + user.getRole() + "\n");
             rank++;
         }

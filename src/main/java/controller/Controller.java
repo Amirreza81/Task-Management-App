@@ -437,6 +437,19 @@ public class Controller {
             return null;
         }
     }
+    public ArrayList<User> getAllTeams(){
+        try {
+            outputStream.writeUTF("get allTeams --token " + token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(new TypeToken<List<Team>>() {
+            }.getType());
+            return (ArrayList<User>) jsonObjectController.createJsonObject2(result);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
 
     public void setSelectedBoard(String boardNameText) throws IOException {
         outputStream.writeUTF(String.format
