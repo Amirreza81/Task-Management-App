@@ -88,10 +88,10 @@ public class ShowTeamForLeaderView implements Initializable {
         for (User user : selectTeam.getTeamMembers()) {
             membersList.getItems().add(user.getUserName());
         }
-        for (User member : User.getUsers()) {
+        for (User member : Controller.controller.getAllUsers()) {
             members.getItems().add(member.getUserName());
         }
-        members.setValue(User.getUsers().get(0).getUserName());
+        members.setValue(Controller.controller.getAllUsers().get(0).getUserName());
     }
 
     public Team getTeam() {

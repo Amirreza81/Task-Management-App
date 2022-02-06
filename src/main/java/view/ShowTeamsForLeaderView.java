@@ -54,7 +54,7 @@ public class ShowTeamsForLeaderView implements Initializable {
     private void refresh() {
         vTeamItem.getChildren().clear();
         ArrayList<Team> teams = new ArrayList<>();
-        for (Team team : Team.getAllTeams()) {
+        for (Team team : Controller.controller.getAllTeams()) {
             if (team.getTeamLeader().getUserName().equals(Controller.controller.getLoggedInUser().getUserName()))
                 teams.add(team);
         }

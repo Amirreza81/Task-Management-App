@@ -437,14 +437,15 @@ public class Controller {
             return null;
         }
     }
-    public ArrayList<User> getAllTeams(){
+
+    public ArrayList<Team> getAllTeams() {
         try {
             outputStream.writeUTF("get allTeams --token " + token);
             outputStream.flush();
             String result = inputStream.readUTF();
             JsonObjectController jsonObjectController = new JsonObjectController(new TypeToken<List<Team>>() {
             }.getType());
-            return (ArrayList<User>) jsonObjectController.createJsonObject2(result);
+            return (ArrayList<Team>) jsonObjectController.createJsonObject2(result);
         } catch (IOException e) {
             return null;
         }
