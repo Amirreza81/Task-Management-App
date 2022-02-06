@@ -376,6 +376,13 @@ public class Server {
             return jsonObjectController.createJsonObject
                     (User.getUsers());
         }
+        else if ((matcher = Controller.controller.getCommandMatcher
+                ("get allTeams --token (.*)"
+                        , input)).matches()) {
+            JsonObjectController<ArrayList<Team>> jsonObjectController = new JsonObjectController<ArrayList<Team>>();
+            return jsonObjectController.createJsonObject
+                    (Team.getAllTeams());
+        }
         return "-1";
 
     }
