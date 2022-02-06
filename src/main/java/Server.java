@@ -157,7 +157,7 @@ public class Server {
                 ("set setLoggedTeam --teamName ([^ ]+) --token (.*)", input)).matches()) {
             LoggedController.getInstance(matcher.group(2)).setLoggedTeam(Controller.controller.findTeam(matcher.group(1)));
             return "successfully";
-        }else if(input.equals("set Data")){
+        } else if (input.equals("set Data")) {
             JsonController.getInstance().updateJson();
             return "successful";
         }
@@ -195,6 +195,12 @@ public class Server {
             int result = Controller.controller.assignMember(LoggedController.getInstance(matcher.group(3)).getLoggedInUser()
                     , LoggedController.getInstance(matcher.group(3)).getSelectedTeamForTask()
                     , matcher.group(1)
+                    , matcher.group(2));
+            return "" + result;
+        } else if ((matcher = Controller.controller.getCommandMatcher("task sendNotificationForTask --taskId ([^ ]+) --memberName ([^ ]+) --token (.*)", input)).matches()) {
+            int result = Controller.controller.sendNotificationForTask(LoggedController.getInstance(matcher.group(3)).getLoggedInUser()
+                    , LoggedController.getInstance(matcher.group(3)).getSelectedTeamForTask()
+                    , Task.getTaskById(LoggedController.getInstance(matcher.group(3)).getSelectedTeamForTask(), matcher.group(1))
                     , matcher.group(2));
             return "" + result;
         } else if ((matcher = Controller.controller.getCommandMatcher("task creatTask --taskTitle ([^ ]+) --startTime ([^ ]+) --deadline ([^ ]+) --description ([^ ]+) --priority ([^ ]+) --token (.*)", input)).matches()) {
@@ -285,7 +291,6 @@ public class Server {
                     loggedController.getSelectedBoard().getTeam(), loggedController.getSelectedBoard().getBoardName(),
                     matcher.group(1));
         }
-        
 
 
         return "-1";
@@ -299,6 +304,15 @@ public class Server {
             return "" + response;
         } else if ((matcher = Controller.controller.getCommandMatcher("Profile --change --oldPassword ([^ ]+) --newPassword ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.changePassword(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(1), matcher.group(2));
+            return "" + response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --changeUserNameForAdmin --username ([^ ]+) --username2 ([^ ]+) --token (.*)", input)).matches()) {
+            int response = Controller.controller.changeUserNameForAdmin(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(1), matcher.group(2));
+            return "" + response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("Profile --changePasswordForAdmin --username ([^ ]+) --oldPassword ([^ ]+) --newPassword ([^ ]+) --token (.*)", input)).matches()) {
+            int response = Controller.controller.changePasswordForAdmin(LoggedController.getInstance(matcher.group(4)).getLoggedInUser()
+                    , matcher.group(1)
+                    , matcher.group(2)
+                    , matcher.group(3));
             return "" + response;
         }
         return "-1";
@@ -330,7 +344,10 @@ public class Server {
         } else if ((matcher = Controller.controller.getCommandMatcher("admin send --notification (.*) --user ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.sendNotificationForUser(LoggedController.getInstance(matcher.group(3)).getLoggedInUser(), matcher.group(2), matcher.group(1));
             return "" + response;
-        }else if ((matcher = Controller.controller.getCommandMatcher("admin --hidden --username ([^ ]+)", input)).matches()) {
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin remove user --user ([^ ]+) --token (.*)", input)).matches()) {
+            int response = Controller.controller.removeUser(matcher.group(1));
+            return "" + response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin --hidden --username ([^ ]+)", input)).matches()) {
             int response = Controller.controller.hiddenUser(matcher.group(1));
             return "" + response;
         }
@@ -381,8 +398,7 @@ public class Server {
             JsonObjectController<ArrayList<User>> jsonObjectController = new JsonObjectController<ArrayList<User>>();
             return jsonObjectController.createJsonObject
                     (User.getUsers());
-        }
-        else if ((matcher = Controller.controller.getCommandMatcher
+        } else if ((matcher = Controller.controller.getCommandMatcher
                 ("get allTeams --token (.*)"
                         , input)).matches()) {
             JsonObjectController<ArrayList<Team>> jsonObjectController = new JsonObjectController<ArrayList<Team>>();

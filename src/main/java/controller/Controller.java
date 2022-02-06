@@ -1171,11 +1171,73 @@ public class Controller {
     }
 
     public int hiddenUser(String username) {
-        if (User.getUserByUsername(username).isHidden()){
+        if (User.getUserByUsername(username).isHidden()) {
             User.getUserByUsername(username).setHidden(false);
         } else {
             User.getUserByUsername(username).setHidden(true);
         }
         return 1;
+    }
+
+    public int sendNotificationForTask(User user, Team team, Task task, String memberName) {
+        for (User user1 : team.getTeamMembers()) {
+            if (user1.getUserName().equals(memberName))
+                sendNotificationForUser(user, user1.getUserName(), ("You have successfully added to task " + task.getTitle()));
+            else
+                sendNotificationForUser(user, user1.getUserName(), ("" + memberName + " successfully added to task x " + task.getTitle()));
+        }
+        return 1;
+    }
+
+    public int changeUserNameForAdmin(User loggedInUser, String oldUsername, String newUsername) {
+        if (!isUsernameAvailable(oldUsername))
+            return 5;
+        else if (!getCommandMatcher(".{4,}", newUsername).matches()) {
+            return 1;
+        } else if (isUsernameAvailable(newUsername)) {
+            return 2;
+        } else if (!getCommandMatcher("[A-Za-z0-9_]+", newUsername).matches()) {
+            return 3;
+        } else if (newUsername.equals(findUser(oldUsername).getUserName())) {
+            return 4;
+        }
+        findUser(oldUsername).setUserName(newUsername);
+        return 0;
+    }
+
+    public int changePasswordForAdmin(User loggedInUser, String username, String oldPassword, String newPassword) {
+        User user;
+        if (loggedInUser.getRole().equals("System Admin") && username != null)
+            user = findUser(username);
+        else
+            user = loggedInUser;
+        if (user == null)
+            return 4;
+        else if (!oldPassword.equals(user.getPassword())) {
+            return 1;
+        } else if (newPassword.equals(oldPassword)) {
+            return 2;
+        } else if (!getCommandMatcher("(?=.*[A-Z])(?=.*\\d)(?!.*[&%$]).{8,}", newPassword).matches()) {
+            return 3;
+        }
+        user.setPassword(newPassword);
+        return 0;
+    }
+
+    public int removeUser(String username) {
+        if (!isUsernameAvailable(username)) {
+            return 1;
+        }
+        User findUser = User.getUserByUsername(username);
+        ArrayList<Task> tasks = findUser.getAllTasksForUser();
+        for (Task task : tasks) {
+            task.getAssignedUser().remove(findUser);
+        }
+        ArrayList<Team> teams = findUser.getUserTeams();
+        for (Team team : teams) {
+            team.getTeamMembers().remove(findUser);
+        }
+        User.getUsers().remove(findUser);
+        return 0;
     }
 }
