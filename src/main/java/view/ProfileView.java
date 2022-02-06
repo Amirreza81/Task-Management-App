@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ProfileView  {
+public class ProfileView {
     public ImageView pictureOfUser;
     public Button editProfile;
     public Button notification;
@@ -49,6 +49,7 @@ public class ProfileView  {
     public Button updateTeam;
     public AnchorPane pane;
     private TableView<Team> tableView;
+    private int response;
 
     public void editProfile(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/EditProfile.fxml"));
@@ -87,7 +88,7 @@ public class ProfileView  {
         ((Stage) log.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void changeUsername(ActionEvent actionEvent) {
+    public void changeUsername(ActionEvent actionEvent) throws IOException {
         if (currentUsername.getText().equals("") || newUsername.getText().equals("") || currentUsername.getText() == null || newUsername.getText() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -95,7 +96,10 @@ public class ProfileView  {
             alert.showAndWait();
             return;
         }
-        int response = Controller.controller.changeUserName(newUsername.getText());
+        if (Controller.controller.getLoggedInUser().getRole().equals("System Admin")) {
+            response = Controller.controller.changeUserNameForAdmin(currentUsername.getText(), newUsername.getText());
+        } else
+            response = Controller.controller.changeUserName(newUsername.getText());
         if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -116,6 +120,11 @@ public class ProfileView  {
             alert.setTitle("Error");
             alert.setContentText("you already have this username !");
             alert.showAndWait();
+        } else if (response == 5) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setContentText("This username does not exist !");
+            alert.showAndWait();
         } else if (response == 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
@@ -125,7 +134,7 @@ public class ProfileView  {
 
     }
 
-    public void changePassword(ActionEvent actionEvent) {
+    public void changePassword(ActionEvent actionEvent) throws IOException {
         if (currentPassword.getText().equals("") || newPassword.getText().equals("") || currentPassword.getText() == null || newPassword.getText() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -133,7 +142,10 @@ public class ProfileView  {
             alert.showAndWait();
             return;
         }
-        int response = Controller.controller.changePassword(currentPassword.getText(), newPassword.getText());
+        if (Controller.controller.getLoggedInUser().getRole().equals("System Admin")) {
+            response = Controller.controller.changePasswordForAdmin(currentUsername.getText(), currentUsername.getText(), newUsername.getText());
+        } else
+            response = Controller.controller.changePassword(currentPassword.getText(), newPassword.getText());
         if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -149,6 +161,11 @@ public class ProfileView  {
             alert.setTitle("Error");
             alert.setContentText("Please Choose A strong Password (Containing at least 8 characters including 1 digit \" +\n" +
                     "                    \"and 1 Capital Letter)");
+            alert.showAndWait();
+        } else if (response == 4) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setContentText("This username does not exist !");
             alert.showAndWait();
         } else if (response == 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -198,7 +215,7 @@ public class ProfileView  {
     }
 
     public void updateTeam(ActionEvent actionEvent) {
-        if(tableView!=null)pane.getChildren().remove(tableView);
+        if (tableView != null) pane.getChildren().remove(tableView);
         ObservableList<Team> list = FXCollections.observableArrayList(Controller.controller.getLoggedInUser().getUserTeams());
         tableView = new TableView<>();
         tableView.setLayoutX(50);

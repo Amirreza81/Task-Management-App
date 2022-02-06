@@ -62,6 +62,7 @@ public class AdminMenuView {
     public Button sendToUser;
     public TextField nameOfTeam;
     public TextField nameOfUser;
+    public Button remove;
     public Button hiddenUser;
     public Label status;
     public Label statusField;
@@ -330,6 +331,23 @@ public class AdminMenuView {
             alert.setTitle("Success");
             alert.setContentText(user.getUserName() + " hidden successfully!");
             alert.showAndWait();
+        }
+    }
+
+    public void remove(ActionEvent actionEvent) throws IOException {
+        if (searchUser == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setContentText("You should fill the fields!");
+            alert.showAndWait();
+        } else {
+            int response = Controller.controller.removeUser(user.getUserName());
+            if (response == 0) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText(user.getUserName() + " remove successfully!");
+                alert.showAndWait();
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
 package view;
 
 import controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Task;
 import model.User;
 
@@ -39,6 +43,15 @@ public class CreateTaskPageForLeaderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        refresh();
+        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            refresh();
+        }));
+        mainTimeline.setCycleCount(Animation.INDEFINITE);
+        mainTimeline.play();
+    }
+
+    private void refresh() {
         priorityChoice.getItems().addAll("Lowest", "Low", "High", "Highest");
         priorityChoice.setValue("Lowest");
         for (User member : Controller.controller.getSelectedTeamForTask().getTeamMembers()) {
@@ -81,6 +94,8 @@ public class CreateTaskPageForLeaderView implements Initializable {
         else {
             membersList.getItems().add(members.getValue().toString());
             result = Controller.controller.assignMember(String.valueOf(task.getCreationId()),
+                    members.getValue().toString());
+            Controller.controller.sendNotificationForTask(String.valueOf(task.getCreationId()),
                     members.getValue().toString());
             lblError.setText("User successfully added!");
         }

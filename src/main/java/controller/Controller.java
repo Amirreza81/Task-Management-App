@@ -425,7 +425,7 @@ public class Controller {
         }
     }
 
-    public ArrayList<User> getAllUsers(){
+    public ArrayList<User> getAllUsers() {
         try {
             outputStream.writeUTF("get allUsers --token " + token);
             outputStream.flush();
@@ -468,7 +468,7 @@ public class Controller {
 
     public int updateDeadline(String title, String text) throws IOException {
         outputStream.writeUTF(String.format
-                ("^board --open --task %s --deadline %s --token %s", title,text,token));
+                ("^board --open --task %s --deadline %s --token %s", title, text, token));
         outputStream.flush();
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
@@ -488,7 +488,7 @@ public class Controller {
 
     public int addCategory(String categoryNameText) throws IOException {
         outputStream.writeUTF(String.format
-                ("board --new  --category %S --token %s", categoryNameText,token));
+                ("board --new  --category %S --token %s", categoryNameText, token));
         outputStream.flush();
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
@@ -502,7 +502,7 @@ public class Controller {
 
     public int boardAddTask(String id) throws IOException {
         outputStream.writeUTF(String.format
-                ("board --add %s --token %s",id ,token));
+                ("board --add %s --token %s", id, token));
         outputStream.flush();
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
@@ -510,21 +510,21 @@ public class Controller {
 
     public void forceCategory(String categoryName, String title) throws IOException {
         outputStream.writeUTF(String.format
-                ("board --force --category %s --task %s --token %s",categoryName,title ,token));
+                ("board --force --category %s --task %s --token %s", categoryName, title, token));
         outputStream.flush();
         inputStream.readUTF();
     }
 
     public void changeColumn(String categoryName, int column) throws IOException {
         outputStream.writeUTF(String.format
-                ("board --category %s --column %s --token %s",categoryName, column,token));
+                ("board --category %s --column %s --token %s", categoryName, column, token));
         outputStream.flush();
         inputStream.readUTF();
     }
 
     public int goToNextCategory(String title) throws IOException {
         outputStream.writeUTF(String.format
-                ("board --category next --task %s --token %s",title ,token));
+                ("board --category next --task %s --token %s", title, token));
         outputStream.flush();
         String result = inputStream.readUTF();
         System.out.println(result);
@@ -546,6 +546,43 @@ public class Controller {
 
     public int hiddenUser(String username) throws IOException {
         outputStream.writeUTF(String.format("admin --hidden --username %s", username));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public void sendNotificationForTask(String taskId, String memberName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("task sendNotificationForTask --taskId %s --memberName %s --token %s", taskId, memberName, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
+
+    public int changeUserNameForAdmin(String oldUsername, String newUsername) throws IOException {
+
+        outputStream.writeUTF(String.format
+                ("Profile --changeUserNameForAdmin --username %s --username2 %s --token %s"
+                        , oldUsername, newUsername, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+
+    }
+
+    public int changePasswordForAdmin(String username, String oldPassword, String newPassword) throws IOException {
+
+        outputStream.writeUTF(String.format
+                ("Profile --changePasswordForAdmin --username %s --oldPassword %s --newPassword %s --token %s"
+                        , username, oldPassword, newPassword, token));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
+
+    public int removeUser(String userName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("admin remove user --user %s --token %s"
+                        , userName, token));
         outputStream.flush();
         String result = inputStream.readUTF();
         return Integer.parseInt(result);

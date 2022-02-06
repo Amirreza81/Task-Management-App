@@ -1,6 +1,9 @@
 package view;
 
 import controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Task;
 
 import java.io.IOException;
@@ -31,6 +35,15 @@ public class TaskListView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        refresh();
+        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            refresh();
+        }));
+        mainTimeline.setCycleCount(Animation.INDEFINITE);
+        mainTimeline.play();
+    }
+
+    private void refresh() {
         ArrayList<Task> tasks = Controller.controller.getLoggedInUser().getAllTasksForUser();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {

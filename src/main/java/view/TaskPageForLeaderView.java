@@ -1,6 +1,9 @@
 package view;
 
 import controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Task;
 import model.User;
 
@@ -47,6 +51,16 @@ public class TaskPageForLeaderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        refresh();
+        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            refresh();
+        }));
+        mainTimeline.setCycleCount(Animation.INDEFINITE);
+        mainTimeline.play();
+
+    }
+
+    private void refresh() {
         Task selectedTask = getTask();
         taskTitleField.setText(selectedTask.getTitle());
         deadlineFiled.setText(selectedTask.getDeadline().toString());
@@ -59,7 +73,6 @@ public class TaskPageForLeaderView implements Initializable {
         for (User user : selectedTask.getAssignedUser()) {
             membersList.getItems().add(user.getUserName());
         }
-
     }
 
     public Task getTask() {
