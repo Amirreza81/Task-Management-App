@@ -537,4 +537,10 @@ public class Controller {
         outputStream.flush();
         inputStream.readUTF();
     }
+
+    public void setData() throws IOException {
+        outputStream.writeUTF("set Data");
+        outputStream.flush();
+        inputStream.readUTF();
+    }
 }

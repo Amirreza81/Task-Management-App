@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.User;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -74,7 +73,7 @@ public class LoginView extends Application {
         ((Stage) errorLabel.getScene().getWindow()).setScene(new Scene(root));
     }
 
-    public void exit(ActionEvent actionEvent) {
+    public void exit(ActionEvent actionEvent) throws IOException {
         boolean confirmation = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Quit");
@@ -82,6 +81,7 @@ public class LoginView extends Application {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.get() == ButtonType.OK) confirmation = true;
         if (confirmation) {
+            Controller.controller.setData();
             System.exit(0);
         }
     }
