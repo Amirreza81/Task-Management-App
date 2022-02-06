@@ -119,6 +119,7 @@ public class AdminMenuView {
             alert.setContentText("You should fill the fields!");
             alert.showAndWait();
         } else {
+            User.setUsers(Controller.controller.getAllUsers());
             searchUser = findUser.getText();
             if (User.getUserByUsername(searchUser) == null) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
