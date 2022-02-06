@@ -1,6 +1,9 @@
 package view.BoardMenu;
 
 import controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.*;
 
 import java.io.IOException;
@@ -34,6 +38,8 @@ public class BoardMenuSecondPageForLeaderView {
     public Button addTaskBtn;
     public Label Completion;
     private TableView<Task> tableView;
+    Timeline mainTimeline;
+
 
     public void initialize() throws IOException {
         if (Controller.controller.getLoggedInUser().getRole().equals("Member")){
@@ -45,6 +51,16 @@ public class BoardMenuSecondPageForLeaderView {
         }
         updateHBOX();
         makeDoneColumn();
+        mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            updateHBOX();
+            try {
+                makeDoneColumn();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }));
+        mainTimeline.setCycleCount(Animation.INDEFINITE);
+        mainTimeline.play();
     }
 
     public void updateHBOX() {
