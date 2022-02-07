@@ -32,7 +32,7 @@
                 <Font name="System Bold" size="13.0" />
             </font>
         </Button>
-        <Button fx:id="logOut" alignment="CENTER" layoutX="138.0" layoutY="298.0" mnemonicParsing="false" onAction="#backToLogInPage" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="LogOut" textFill="WHITE">
+        <Button fx:id="logOut" alignment="CENTER" layoutX="138.0" layoutY="340.0" mnemonicParsing="false" onAction="#backToLogInPage" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="LogOut" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="13.0" />
             </font>
@@ -42,5 +42,10 @@
                 <Font name="System Bold" size="13.0" />
             </font>
         </Button>
+      <Button fx:id="inviteButton" alignment="CENTER" layoutX="138.0" layoutY="300.0" mnemonicParsing="false" onAction="#goToInviteForLeader" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Invite Your Friends" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
