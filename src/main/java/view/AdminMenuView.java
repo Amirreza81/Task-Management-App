@@ -204,10 +204,10 @@ public class AdminMenuView {
 
     public void refresh(ActionEvent actionEvent) {
         numberOfUsers.setText(Integer.toString(User.getUsers().size()));
-        numberOfTeams.setText(Integer.toString(Team.getAllTeams().size()));
+        numberOfTeams.setText(Integer.toString(Controller.controller.getAllTeams().size()));
         int doneTask = 0;
         int failedTask = 0;
-        for (Team team : Team.getAllTeams()) {
+        for (Team team : Controller.controller.getAllTeams()) {
             for (Board board : team.getBoards()) {
                 doneTask += board.getDone().size();
                 failedTask += board.getFailed().size();
