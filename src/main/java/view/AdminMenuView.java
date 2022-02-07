@@ -92,8 +92,13 @@ public class AdminMenuView {
         ArrayList<String> informationOfUser = new ArrayList<>();
         int rank = 1;
         for (User user : Controller.controller.getAllUsers()) {
-            informationOfUser.add(rank + ". " + user.getUserName() + "\t\t" + user.getRole() + "\n");
-            rank++;
+            if (user.isHidden()) {
+                informationOfUser.add(rank + ". " + user.getUserName() + "\t\t" + user.getRole() + "\t" + "(Hidden)\n");
+                rank++;
+            } else {
+                informationOfUser.add(rank + ". " + user.getUserName() + "\t\t" + user.getRole() + "\n");
+                rank++;
+            }
         }
         listsOfUsers.setText(informationOfUser.toString().replaceAll(",", "").replaceAll("\\[", "").replaceAll("\\]", ""));
     }
@@ -133,7 +138,7 @@ public class AdminMenuView {
                 foundEmail.setText(user.getEmail());
                 foundRole.setText(user.getRole());
                 foundScore.setText(Integer.toString(user.getScore()));
-                if (user.isHidden()){
+                if (user.isHidden()) {
                     statusField.setText("Hidden");
                 } else {
                     statusField.setText("Visible");
@@ -326,7 +331,7 @@ public class AdminMenuView {
 
     public void hiddenUser(ActionEvent actionEvent) throws IOException {
         int response = Controller.controller.hiddenUser(findUser.getText());
-        if (response == 1){
+        if (response == 1) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setContentText(user.getUserName() + " hidden successfully!");
