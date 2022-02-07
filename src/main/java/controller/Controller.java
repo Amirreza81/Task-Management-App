@@ -664,13 +664,13 @@ public class Controller {
         arrayList.add("--");
     }
 
-    public ArrayList<String> showChatRoom(Team team) {
-        ArrayList<String> result = new ArrayList<>();
-        for (Message message : team.getChatRoom().getAllMassages()) {
-            result.add(message.getSender().getUserName() + " : \"" + message.getText() + "\"");
-        }
-        return result;
-    }
+//    public ArrayList<String> showChatRoom(Team team) {
+//        ArrayList<String> result = new ArrayList<>();
+//        for (Message message : team.getChatRoom().getAllMassages()) {
+//            result.add(message.getSender().getUserName() + " : \"" + message.getText() + "\"");
+//        }
+//        return result;
+//    }
 
 
     public ArrayList<java.util.Date> showDeadLines(User user) throws ParseException {

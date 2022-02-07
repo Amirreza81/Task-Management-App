@@ -1,7 +1,4 @@
-import controller.Controller;
-import controller.JsonController;
-import controller.JsonObjectController;
-import controller.LoggedController;
+import controller.*;
 import model.Board;
 import model.Task;
 import model.Team;
@@ -15,6 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
@@ -49,16 +47,57 @@ public class Server {
             try {
                 DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                processCommand(dataInputStream, dataOutputStream);
-                dataInputStream.close();
-                socket.close();
+                processCommand(dataInputStream, dataOutputStream , socket);
+//                dataInputStream.close();
+//                socket.close();
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
         }).start();
     }
+    private static void startThreadForChatSocket(Socket socket, DataOutputStream dataOutputStream, DataInputStream dataInputStream, String token) {
+        new Thread(() -> {
+            try {
+                while (true) {
+                    System.out.println("while");
+                    String message;
+                    message = dataInputStream.readUTF();
+                    System.out.println("im here");
+                    if (message.equals("close_chat_socket")) {
+                        System.out.println("chat closed");
+                        synchronized (LoggedController.getDataForChat()) {
+                            LoggedController.getDataForChat().get(token).writeUTF("close");
+                            dataOutputStream.flush();
+                            LoggedController.getDataForChat().remove(token);
+                        }
+                        synchronized (LoggedController.getOnlineCounter()) {
+                            LoggedController.getOnlineCounter().get(token).writeUTF("close");
+                            LoggedController.getOnlineCounter().get(token).flush();
+                            LoggedController.getOnlineCounter().remove(token);
+                        }
 
-    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream)
+                        break;
+                    } else if (message.matches("user_data .+")) {
+                        message = message.replaceFirst("user_data ", "");
+                        User user = User.getUserByUsername(message);
+                        dataOutputStream.writeUTF(user.getUserName() + " " + user.getFullName() + " " + user.getScore());
+                        dataOutputStream.flush();
+                    } else {
+                        System.out.println(message);
+                        String result = ChatMenuController.getInstance().sendMessage(token, message);
+                        dataOutputStream.writeUTF(result);
+                        dataOutputStream.flush();
+                    }
+                }
+                dataOutputStream.close();
+                dataInputStream.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream,Socket socket)
             throws IOException, ParseException {
         while (true) {
             String input;
@@ -67,11 +106,37 @@ public class Server {
             } catch (SocketException e) {
                 break;
             }
-            String result = recognizeCommand(input);
-            // there should be a way to say that the client is sending non-meaningful commands and close the socket
-            if (result.equals("")) break;
-            dataOutputStream.writeUTF(result);
-            dataOutputStream.flush();
+            if (input.startsWith("chat")){
+                recognizeChatCommand(input,dataOutputStream,dataInputStream,socket);
+                break;
+            }
+            else {
+                String result = recognizeCommand(input);
+                // there should be a way to say that the client is sending non-meaningful commands and close the socket
+                if (result.equals("")) break;
+                dataOutputStream.writeUTF(result);
+                dataOutputStream.flush();
+            }
+
+        }
+    }
+
+    private void recognizeChatCommand(String in,DataOutputStream dataOutputStream,
+                                      DataInputStream dataInputStream,Socket socket) throws IOException {
+        System.out.println(in);
+        if (in.matches("chat_Socket_Read .+")) {
+            in = in.replaceFirst("chat_Socket_Read ", "");
+            LoggedController.getDataForChat().put(in, dataOutputStream);
+            System.out.println("puted");
+        } else if (in.matches("chat_send_socket .+")) {
+            System.out.println("R method");
+            String token = in.replaceFirst("chat_send_socket ", "");
+            startThreadForChatSocket(socket, dataOutputStream, dataInputStream, token);
+            dataOutputStream.writeUTF("success " + LoggedController.instance.keySet().size());
+        }
+        else if (in.matches("chat_online_member_counter .+")) {
+            in = in.replaceFirst("chat_online_member_counter ", "");
+            LoggedController.getOnlineCounter().put(in, dataOutputStream);
         }
     }
 

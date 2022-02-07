@@ -5,16 +5,22 @@ import model.Task;
 import model.Team;
 import model.User;
 
+import java.io.DataOutputStream;
 import java.util.HashMap;
+import java.util.List;
 
 public class LoggedController {
-    private static HashMap<String,LoggedController> instance = new HashMap<>();
+    public static HashMap<String,LoggedController> instance = new HashMap<>();
+    private static HashMap<String,DataOutputStream>  dataForChat = new HashMap<>();
+    private static HashMap<String, DataOutputStream> onlineCounter = new HashMap<>();
     private User loggedInUser;
     private Team loggedTeam;
     private Board selectedBoard;
     private Task selectedTask;
     private Team selectedTeam;
     private Team selectedTeamForTask;
+
+
 
 
     private LoggedController() {
@@ -27,6 +33,23 @@ public class LoggedController {
         }
         return instance.get(token);
     }
+
+    public static HashMap<String, DataOutputStream> getDataForChat() {
+        return dataForChat;
+    }
+
+    public static void setDataForChat(HashMap<String, DataOutputStream> dataForChat) {
+        LoggedController.dataForChat = dataForChat;
+    }
+
+    public static HashMap<String, DataOutputStream> getOnlineCounter() {
+        return onlineCounter;
+    }
+
+    public static void setOnlineCounter(HashMap<String, DataOutputStream> onlineCounter) {
+        LoggedController.onlineCounter = onlineCounter;
+    }
+
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
@@ -75,4 +98,5 @@ public class LoggedController {
     public void setSelectedTeamForTask(Team selectedTeamForTask) {
         this.selectedTeamForTask = selectedTeamForTask;
     }
+
 }

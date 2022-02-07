@@ -27,6 +27,7 @@ public class Team {
 
 
     public Team(String teamName, User teamLeader, Date creationDate) {
+        this.chatRoom = new ChatRoom(this);
         this.teamName = teamName;
         this.teamLeader = teamLeader;
         this.creationDate = creationDate;
