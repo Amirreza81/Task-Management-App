@@ -85,9 +85,11 @@ public class ShowTeamForLeaderView implements Initializable {
     private void refresh() {
         Team selectTeam = getTeam();
         teamTitleField.setText(selectTeam.getTeamName());
+        membersList.getItems().clear();
         for (User user : selectTeam.getTeamMembers()) {
             membersList.getItems().add(user.getUserName());
         }
+        members.getItems().clear();
         for (User member : Controller.controller.getAllUsers()) {
             members.getItems().add(member.getUserName());
         }

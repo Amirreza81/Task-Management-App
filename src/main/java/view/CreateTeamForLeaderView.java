@@ -38,6 +38,15 @@ public class CreateTeamForLeaderView implements Initializable {
     private Team selectedTeam = null;
     private int result;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        refresh();
+        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            refresh();
+        }));
+        mainTimeline.setCycleCount(Animation.INDEFINITE);
+        mainTimeline.play();
+    }
     public void exit(MouseEvent mouseEvent) {
         System.exit(0);
     }
@@ -55,7 +64,7 @@ public class CreateTeamForLeaderView implements Initializable {
             error.setText("Team name is invalid!");
         else if (status == 3) {
             error.setText("Team created successfully! Waiting For Admin’s confirmation…");
-            selectedTeam = Team.getTeamByName(teamTitleField.getText(), Team.getAllTeams());
+            selectedTeam = Team.getTeamByName(teamTitleField.getText(), Controller.controller.getAllTeams());
         }
     }
 
@@ -97,17 +106,9 @@ public class CreateTeamForLeaderView implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-            refresh();
-        }));
-        mainTimeline.setCycleCount(Animation.INDEFINITE);
-        mainTimeline.play();
-    }
 
     private void refresh() {
+        members.getItems().clear();
         for (User member : Controller.controller.getAllUsers()) {
             members.getItems().add(member.getUserName());
         }
