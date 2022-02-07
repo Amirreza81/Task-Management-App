@@ -92,10 +92,22 @@ public class Server {
             return recognizeTaskCommand(input);
         } else if (input.startsWith("team")) {
             return recognizeTeamCommand(input);
+        } else if (input.startsWith("invite")){
+            return recognizeInviteCommand(input);
         }
 
         // this means the command is not meaningful
         return "";
+    }
+
+    private String recognizeInviteCommand(String input) {
+        Matcher matcher;
+        if ((matcher = Controller.controller.getCommandMatcher
+                ("invite --email (.*) --team (.*)", input)).matches()) {
+            int result = Controller.controller.invite(matcher.group(1), matcher.group(2));
+            return "" + result;
+        }
+        return "-1";
     }
 
     private String recognizeTeamCommand(String input) {

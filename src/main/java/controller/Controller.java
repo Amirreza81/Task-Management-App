@@ -25,6 +25,13 @@ public class Controller {
             return 4;
         }
         User user = new User(username, password1, email);
+        for (Team team: Team.getAllTeams()){
+            for (String emailOfInvitedFriends: team.getInvitedFriends()){
+                if (emailOfInvitedFriends.equals(email)){
+                    team.getTeamMembers().add(user);
+                }
+            }
+        }
         return 0;
     }
 
@@ -1239,5 +1246,11 @@ public class Controller {
         }
         User.getUsers().remove(findUser);
         return 0;
+    }
+
+    public int invite(String email, String teamName) {
+        Team team = Team.getTeamByName(teamName, Team.getAllTeams());
+        team.getInvitedFriends().add(email);
+        return 1;
     }
 }
