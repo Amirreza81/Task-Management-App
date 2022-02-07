@@ -42,7 +42,7 @@ public class TeamMenuSecondPageView {
 
     public void goToChatRoom(ActionEvent actionEvent) throws IOException {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource
-                ("/fxml/ChatRoom.fxml")));
+                ("/fxml/global_chat.fxml")));
         Scene scene = new Scene(parent);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(scene);

@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.util.Optional;
 
 public class LoginView extends Application {
-
+    private static Stage stage;
     public TextField username;
     public PasswordField password;
     public Button login;
@@ -22,6 +22,11 @@ public class LoginView extends Application {
     public TextField welcomeText;
     public Button register;
     public Button exit;
+
+    public static Stage getStage() {
+        return stage;
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -31,8 +36,10 @@ public class LoginView extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        stage = primaryStage;
 
     }
+
 
     public static void main(String[] args) {
         launch(args);

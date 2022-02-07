@@ -7,7 +7,7 @@ public class ChatRoom {
 
     private Team team;
     private HashMap<User, ArrayList<Message>> chatRoom;
-    private ArrayList<Message> allMassages;
+    private ArrayList<String> allMassages;
 
     public ChatRoom(Team team) {
         this.team = team;
@@ -16,7 +16,7 @@ public class ChatRoom {
         this.allMassages = new ArrayList<>();
     }
 
-    public ArrayList<Message> getAllMassages() {
+    public ArrayList<String> getAllMassages() {
         return allMassages;
     }
 
