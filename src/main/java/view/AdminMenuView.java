@@ -293,6 +293,10 @@ public class AdminMenuView {
             return;
         }
         Controller.controller.sendNotificationToAll(textOfNotification.getText());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setContentText("Done!");
+        alert.showAndWait();
     }
 
     public void sendToTeam(ActionEvent actionEvent) {
@@ -308,6 +312,11 @@ public class AdminMenuView {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("There is no team with this name");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Done!");
             alert.showAndWait();
         }
     }
@@ -325,6 +334,11 @@ public class AdminMenuView {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setContentText("There is no team with this name");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Done!");
             alert.showAndWait();
         }
     }
