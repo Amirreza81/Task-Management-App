@@ -28,7 +28,9 @@ public class RegisterView {
         String currentPassword = password.getText();
         String confirmPassword = password2.getText();
         String currentEmail = email.getText();
+        System.out.println("ggggg");
         int response = Controller.controller.register(currentUsername, currentPassword, confirmPassword, currentEmail);
+        System.out.println("sssss");
         if (currentUsername.isEmpty() || currentPassword.isEmpty() || confirmPassword.isEmpty() || currentEmail.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");

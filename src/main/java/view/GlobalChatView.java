@@ -3,8 +3,11 @@ package view;
 import controller.Controller;
 import controller.GlobalChatController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -21,7 +24,9 @@ import javafx.stage.StageStyle;
 import model.GlobalChatMessage;
 import model.PopUpMessage;
 import model.Team;
+import model.User;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -43,6 +48,7 @@ public class GlobalChatView {
     public TextField messageText;
     public Label onlineNumberLabel;
     public ScrollPane scrollPane;
+    public Button backBtn;
 
     @FXML
     public void initialize() {
@@ -67,13 +73,6 @@ public class GlobalChatView {
     }
 
 
-    public void back(MouseEvent mouseEvent) throws IOException {
-        if (mouseEvent.getButton() != MouseButton.PRIMARY)
-            return;
-        GlobalChatController.getInstance().close();
-
-    }
-
     public void enter(KeyEvent keyEvent) {
         if (keyEvent.getCode().toString().equals("ENTER")) {
             keyEvent.consume();
@@ -82,7 +81,17 @@ public class GlobalChatView {
     }
 
     private void sendMessage() {
-        sendData = "<" + Controller.controller.getLoggedInUser().getUserName() + "> : " + messageText.getText();
+        User user = Controller.controller.getLoggedInUser();
+        String username = user.getUserName();
+        try {
+            if (user.isHidden()){
+                username= "hidden";
+            }
+        }
+        catch (Exception nullPoint){
+            //
+        }
+        sendData = "<" + username + "> : " + messageText.getText();
         GlobalChatMessage globalChatMessage = GlobalChatController.getInstance().sendChatMessage(sendData);
         if (globalChatMessage != GlobalChatMessage.MESSAGE_SENT) {
 //            new PopUpMessage(globalChatMessage.getAlertType(), globalChatMessage.getLabel());
@@ -155,5 +164,11 @@ public class GlobalChatView {
 
     public void showOnlineCount() {
         onlineNumberLabel.setText("Online : " + GlobalChatController.getInstance().getOnlineCount());
+    }
+
+    public void back(javafx.event.ActionEvent actionEvent) throws IOException {
+        GlobalChatController.getInstance().close();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/TeamMenuSecondPage.fxml"));
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).setScene(new Scene(root));
     }
 }
