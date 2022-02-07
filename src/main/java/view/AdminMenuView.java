@@ -133,17 +133,22 @@ public class AdminMenuView {
                 alert.setContentText("There is no user with this username");
                 alert.showAndWait();
             } else {
-                user = User.getUserByUsername(searchUser);
-                foundUsername.setText(user.getUserName());
-                foundEmail.setText(user.getEmail());
-                foundRole.setText(user.getRole());
-                foundScore.setText(Integer.toString(user.getScore()));
-                if (user.isHidden()) {
-                    statusField.setText("Hidden");
-                } else {
-                    statusField.setText("Visible");
-                }
+                refresh();
             }
+        }
+    }
+
+    private void refresh() {
+        User.setUsers(Controller.controller.getAllUsers());
+        user = User.getUserByUsername(searchUser);
+        foundUsername.setText(user.getUserName());
+        foundEmail.setText(user.getEmail());
+        foundRole.setText(user.getRole());
+        foundScore.setText(Integer.toString(user.getScore()));
+        if (user.isHidden()) {
+            statusField.setText("Hidden");
+        } else {
+            statusField.setText("Visible");
         }
     }
 
@@ -337,6 +342,7 @@ public class AdminMenuView {
             alert.setContentText(user.getUserName() + " hidden successfully!");
             alert.showAndWait();
         }
+        refresh();
     }
 
     public void remove(ActionEvent actionEvent) throws IOException {
