@@ -75,7 +75,6 @@ public class Server {
                             LoggedController.getOnlineCounter().get(token).flush();
                             LoggedController.getOnlineCounter().remove(token);
                         }
-
                         break;
                     } else if (message.matches("user_data .+")) {
                         message = message.replaceFirst("user_data ", "");

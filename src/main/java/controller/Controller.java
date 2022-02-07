@@ -26,6 +26,7 @@ public class Controller {
         }
         User user = new User(username, password1, email);
         for (Team team: Team.getAllTeams()){
+            if (team.getInvitedFriends() == null) continue;
             for (String emailOfInvitedFriends: team.getInvitedFriends()){
                 if (emailOfInvitedFriends.equals(email)){
                     team.getTeamMembers().add(user);
