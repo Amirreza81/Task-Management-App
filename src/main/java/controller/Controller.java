@@ -588,4 +588,13 @@ public class Controller {
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
     }
+
+    public int invite(String email, String teamName) throws IOException {
+        outputStream.writeUTF(String.format
+                ("invite --email %s --team %s"
+                        , email, teamName));
+        outputStream.flush();
+        String result = inputStream.readUTF();
+        return Integer.parseInt(result);
+    }
 }

@@ -53,6 +53,14 @@ public class Team {
         return null;
     }
 
+    public ArrayList<String> getInvitedFriends() {
+        return invitedFriends;
+    }
+
+    public void setInvitedFriends(ArrayList<String> invitedFriends) {
+        this.invitedFriends = invitedFriends;
+    }
+
     public Date getCreationDate() {
         return creationDate;
     }
