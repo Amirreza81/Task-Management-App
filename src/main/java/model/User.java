@@ -16,7 +16,7 @@ public class User {
     private String password;
     private String email;
     private String role = "Member";
-    private boolean isHidden = true;
+    private boolean isHidden = false;
     private int score = 0;
     private ArrayList<Log> allLogs;
     private ArrayList<Task> allTasksForUser;
