@@ -30,6 +30,9 @@ public class Controller {
             for (String emailOfInvitedFriends : team.getInvitedFriends()) {
                 if (emailOfInvitedFriends.equals(email)) {
                     team.getTeamMembers().add(user);
+                    user.getUserTeams().add(team);
+                    user.getJoiningDate().put(team, team.getCreationDate());
+                    team.getScoreboard().getScores().put(user, 0);
                 }
             }
         }

@@ -13,6 +13,13 @@ public class ChatMenuController {
     }
 
     public String sendMessage(String token, String message) {
+        LoggedController loggedController = LoggedController.getInstance(token);
+        if(loggedController.getLoggedInUser().getRole().equals("Leader")){
+            Controller.controller.sendNotificationForTeam(loggedController.getLoggedInUser(),
+                    loggedController.getLoggedTeam().getTeamName(),
+                    "Massage from leader of team  "+loggedController.getLoggedTeam().getTeamName()
+                            +" has been sent to group chatroom : \n"+message);
+        }
         LoggedController.getInstance(token).getLoggedTeam().getChatRoom().getAllMassages().add(message);
         synchronized (LoggedController.getDataForChat()) {
             for (String s : LoggedController.getDataForChat().keySet()) {
