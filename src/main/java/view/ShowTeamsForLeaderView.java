@@ -30,6 +30,7 @@ public class ShowTeamsForLeaderView implements Initializable {
     public VBox vTeamItem;
     public Button createTeam;
     public Button leave;
+    private Timeline mainTimeline;
 
     public void exit(MouseEvent mouseEvent) {
         System.exit(0);
@@ -37,6 +38,7 @@ public class ShowTeamsForLeaderView implements Initializable {
 
 
     public void goCreateTeam(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/SpecialCommandsForLeader.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -44,7 +46,7 @@ public class ShowTeamsForLeaderView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+         mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             refresh();
         }));
         mainTimeline.setCycleCount(Animation.INDEFINITE);
@@ -74,6 +76,7 @@ public class ShowTeamsForLeaderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }

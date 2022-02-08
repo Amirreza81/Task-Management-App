@@ -51,12 +51,6 @@ public class TaskPageForLeaderView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(30), e -> {
-            refresh();
-        }));
-        mainTimeline.setCycleCount(Animation.INDEFINITE);
-        mainTimeline.play();
-
     }
 
     private void refresh() {

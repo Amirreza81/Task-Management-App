@@ -1,6 +1,9 @@
 package view;
 
 import controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Board;
 import model.Team;
 import model.User;
@@ -29,8 +33,15 @@ public class TeamMenuFirstPageView {
     public AnchorPane pane;
 
     private TableView<Team> tableView;
+    private Timeline timeline;
+
     public void initialize() {
         makeBoardsTable();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            makeBoardsTable();
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
     private void makeBoardsTable() {
         if(tableView!=null)pane.getChildren().remove(tableView);
@@ -56,6 +67,7 @@ public class TeamMenuFirstPageView {
             return;
         }
         Controller.controller.setLoggedTeam(teamNameText);
+        timeline.stop();
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource
                 ("/fxml/TeamMenuSecondPage.fxml")));
         Scene scene = new Scene(parent);
@@ -65,6 +77,7 @@ public class TeamMenuFirstPageView {
     }
 
     public void back(ActionEvent actionEvent) throws IOException {
+        timeline.stop();
         if (Controller.controller.getLoggedInUser().getRole().equals("Leader")){
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));

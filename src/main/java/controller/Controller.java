@@ -605,4 +605,17 @@ public class Controller {
         outputStream.flush();
         inputStream.readUTF();
     }
+
+    public ArrayList<Team> getPendingTeams() {
+        try {
+            outputStream.writeUTF("get pendingTeams --token " + token);
+            outputStream.flush();
+            String result = inputStream.readUTF();
+            JsonObjectController jsonObjectController = new JsonObjectController(new TypeToken<List<Team>>() {
+            }.getType());
+            return (ArrayList<Team>) jsonObjectController.createJsonObject2(result);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }

@@ -32,12 +32,13 @@ public class TaskListForLeaderView implements Initializable {
     public Button btnCreateTask;
     public ImageView exit;
     public Button btnLeave;
+    private Timeline mainTimeline;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+         mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             refresh();
         }));
         mainTimeline.setCycleCount(Animation.INDEFINITE);
@@ -63,6 +64,7 @@ public class TaskListForLeaderView implements Initializable {
     }
 
     public void goToCreateTaskPage(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/CreateTaskPageForLeader.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -72,6 +74,7 @@ public class TaskListForLeaderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }

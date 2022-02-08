@@ -1,5 +1,8 @@
 package view;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.User;
 
 import java.io.IOException;
@@ -22,9 +26,20 @@ import java.util.Objects;
 
 public class ScoreBoardView {
     public AnchorPane pane;
+    private Timeline timeline;
 
     @FXML
     public void initialize() {
+        makeScoreBoard();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+               makeScoreBoard();
+               }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+
+    private void makeScoreBoard() {
         ScoreBoardData.getAndSetDataFromUser();
         ObservableList<ScoreBoardData> list = FXCollections.observableArrayList(ScoreBoardData.getScoreBoardData());
         TableView<ScoreBoardData> tableView = new TableView<>();
@@ -48,6 +63,7 @@ public class ScoreBoardView {
     }
 
     public void backToMain(ActionEvent actionEvent) throws IOException {
+        timeline.stop();
         Parent url = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/TeamMenuSecondPage.fxml")));
         Scene scene = new Scene(url);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

@@ -64,6 +64,7 @@ public class CreateTeamForLeaderView implements Initializable {
         else if (status == 3) {
             error.setText("Team created successfully! Waiting For Admin’s confirmation…");
             selectedTeam = Team.getTeamByName(teamTitleField.getText(), Controller.controller.getAllTeams());
+            Controller.controller.setSelectedTeam(selectedTeam.getTeamName());
         }
     }
 

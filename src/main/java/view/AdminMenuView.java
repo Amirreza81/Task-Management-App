@@ -227,7 +227,7 @@ public class AdminMenuView {
         } else {
             ArrayList<String> pending = new ArrayList<>();
             int rank = 1;
-            for (Team team : Team.getPendingTeams()) {
+            for (Team team : Controller.controller.getPendingTeams()) {
                 pending.add(rank + ". " + team.getTeamName() + "\n");
                 rank++;
             }

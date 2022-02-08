@@ -75,11 +75,6 @@ public class ShowTeamForLeaderView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-            refresh();
-        }));
-        mainTimeline.setCycleCount(Animation.INDEFINITE);
-        mainTimeline.play();
     }
 
     private void refresh() {

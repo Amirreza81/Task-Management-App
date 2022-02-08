@@ -33,12 +33,14 @@ public class TaskPageForCalenderView implements Initializable {
     public Label lblPriority;
     public Label lblDateOfCreation;
     public Label lblDeadline;
+    private Timeline mainTimeline;
 
     public void exit(MouseEvent mouseEvent) {
         System.exit(0);
     }
 
     public void CalenderPage(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Calender.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -48,6 +50,7 @@ public class TaskPageForCalenderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
@@ -63,7 +66,7 @@ public class TaskPageForCalenderView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+        mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             refresh();
         }));
         mainTimeline.setCycleCount(Animation.INDEFINITE);

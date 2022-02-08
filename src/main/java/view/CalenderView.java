@@ -29,15 +29,16 @@ public class CalenderView implements Initializable {
     public ImageView exit;
     public Button leave;
     public VBox vTaskItem;
+    private Timeline timeline;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             refresh();
         }));
-        mainTimeline.setCycleCount(Animation.INDEFINITE);
-        mainTimeline.play();
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     private void refresh() {
@@ -63,6 +64,7 @@ public class CalenderView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
+        timeline.stop();
         if (Controller.controller.getLoggedInUser().getRole().equals("Leader")) {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
             ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));

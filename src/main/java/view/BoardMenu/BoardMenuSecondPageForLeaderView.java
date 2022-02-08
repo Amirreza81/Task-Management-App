@@ -131,15 +131,18 @@ public class BoardMenuSecondPageForLeaderView {
     public void addTask(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/BoardMenuAddTaskPage.fxml"));
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).setScene(new Scene(root));
+        mainTimeline.stop();
     }
 
     public void back(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/BoardMenuFirstPage.fxml"));
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).setScene(new Scene(root));
+        mainTimeline.stop();
     }
     public void gotoFailedTasksPage(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/BoardMenuFailedTaskPage.fxml"));
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).setScene(new Scene(root));
+        mainTimeline.stop();
     }
 
 

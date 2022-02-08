@@ -32,9 +32,11 @@ public class TaskPageView implements Initializable {
     public AnchorPane pane;
     public ImageView exit;
     public Button leave;
+    private Timeline mainTimeline;
 
 
     public void goToTaskList(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/TaskList.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
@@ -46,7 +48,7 @@ public class TaskPageView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+         mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             refresh();
         }));
         mainTimeline.setCycleCount(Animation.INDEFINITE);
@@ -70,6 +72,7 @@ public class TaskPageView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }

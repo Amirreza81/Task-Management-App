@@ -31,12 +31,13 @@ public class TaskListView implements Initializable {
     public ImageView exit;
     public Button leave;
     public AnchorPane pane;
+    private Timeline mainTimeline;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+         mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             refresh();
         }));
         mainTimeline.setCycleCount(Animation.INDEFINITE);
@@ -66,6 +67,7 @@ public class TaskListView implements Initializable {
     }
 
     public void leave(ActionEvent actionEvent) throws IOException {
+        mainTimeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
