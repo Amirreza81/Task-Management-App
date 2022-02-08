@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.*;
 
@@ -66,6 +67,8 @@ public class AdminMenuView {
     public Button hiddenUser;
     public Label status;
     public Label statusField;
+    public Button ChangeInformation;
+    public AnchorPane pane;
 
 
     public void goToUsers(ActionEvent actionEvent) throws IOException {
@@ -374,5 +377,10 @@ public class AdminMenuView {
                 alert.showAndWait();
             }
         }
+    }
+
+    public void ChangeInformation(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/ChangeInformation.fxml"));
+        ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
     }
 }

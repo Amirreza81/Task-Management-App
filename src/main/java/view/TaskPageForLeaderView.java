@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -41,6 +38,8 @@ public class TaskPageForLeaderView implements Initializable {
     public ImageView exit;
     public Button DeleteMember;
     public Button leave;
+    public Button AddMember;
+    public ChoiceBox members;
     private int result;
 
     public void goToTaskList(ActionEvent actionEvent) throws IOException {
@@ -52,7 +51,7 @@ public class TaskPageForLeaderView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(30), e -> {
             refresh();
         }));
         mainTimeline.setCycleCount(Animation.INDEFINITE);
@@ -70,9 +69,15 @@ public class TaskPageForLeaderView implements Initializable {
             descriptionField.setText("description is null!");
         else
             descriptionField.setText(selectedTask.getDescription());
+        membersList.getItems().clear();
         for (User user : selectedTask.getAssignedUser()) {
             membersList.getItems().add(user.getUserName());
         }
+        members.getItems().clear();
+        for (User member : Controller.controller.getSelectedTeamForTask().getTeamMembers()) {
+            members.getItems().add(member.getUserName());
+        }
+        members.setValue(Controller.controller.getSelectedTeamForTask().getTeamMembers().get(0).getUserName());
     }
 
     public Task getTask() {
@@ -109,7 +114,7 @@ public class TaskPageForLeaderView implements Initializable {
         Task selectTask = getTask();
         String selectedItem = membersList.getSelectionModel().getSelectedItem().toString();
         result = Controller.controller.removeAssignedUsers(selectedItem);
-        membersList = null;
+        membersList.getItems().clear();
         for (User user : selectTask.getAssignedUser()) {
             membersList.getItems().add(user.getUserName());
         }
@@ -118,5 +123,19 @@ public class TaskPageForLeaderView implements Initializable {
     public void leave(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LeaderMenu.fxml"));
         ((Stage) pane.getScene().getWindow()).setScene(new Scene(root));
+    }
+
+    public void addMember(ActionEvent actionEvent) throws IOException {
+        Task selectTask = getTask();
+        if (membersList.getItems().contains(members.getValue().toString()))
+            lblError.setText("Old added to list!");
+        else {
+            membersList.getItems().add(members.getValue().toString());
+            result = Controller.controller.assignMember(String.valueOf(selectTask.getCreationId()),
+                    members.getValue().toString());
+            Controller.controller.sendNotificationForTask(String.valueOf(selectTask.getCreationId()),
+                    members.getValue().toString());
+            lblError.setText("User successfully added!");
+        }
     }
 }

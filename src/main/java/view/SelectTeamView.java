@@ -41,6 +41,7 @@ public class SelectTeamView implements Initializable {
     }
 
     private void refresh() {
+        vTeamItem.getChildren().clear();
         ArrayList<Team> teams = new ArrayList<>(Controller.controller.getLoggedInUser().getUserTeams());
         Node[] nodes = new Node[teams.size()];
         for (int i = 0; i < nodes.length; i++) {

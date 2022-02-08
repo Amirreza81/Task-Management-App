@@ -45,6 +45,7 @@ public class TaskListForLeaderView implements Initializable {
     }
 
     private void refresh() {
+        vTaskItem.getChildren().clear();
         ArrayList<Task> tasks = Controller.controller.getSelectedTeamForTask().getAllTasks();
         Node[] nodes = new Node[tasks.size()];
         for (int i = 0; i < nodes.length; i++) {

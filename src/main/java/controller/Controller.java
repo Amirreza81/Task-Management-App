@@ -597,4 +597,12 @@ public class Controller {
         String result = inputStream.readUTF();
         return Integer.parseInt(result);
     }
+
+    public void changeEmail(String username, String email) throws IOException {
+        outputStream.writeUTF(String.format
+                ("admin --changeEmail --username %s --email %s --token %s"
+                        , username, email, token));
+        outputStream.flush();
+        inputStream.readUTF();
+    }
 }

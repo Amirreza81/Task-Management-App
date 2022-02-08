@@ -5,37 +5,59 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #949292;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AdminMenuView">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0"
+            prefWidth="600.0" style="-fx-background-color: #949292;" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AdminMenuView">
     <children>
-        <Label alignment="CENTER" layoutX="21.0" layoutY="14.0" prefHeight="62.0" prefWidth="228.0" text="Admin Menu" textFill="#cc0000">
+        <Label alignment="CENTER" layoutX="21.0" layoutY="14.0" prefHeight="62.0" prefWidth="228.0" text="Admin Menu"
+               textFill="#cc0000">
             <font>
-                <Font name="System Bold" size="23.0" />
+                <Font name="System Bold" size="23.0"/>
             </font>
         </Label>
-        <Button fx:id="users" alignment="CENTER" layoutX="135.0" layoutY="97.0" mnemonicParsing="false" onAction="#goToUsers" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Users" textFill="WHITE">
+        <Button fx:id="users" alignment="CENTER" layoutX="135.0" layoutY="97.0" mnemonicParsing="false"
+                onAction="#goToUsers" prefHeight="26.0" prefWidth="184.0"
+                style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Users" textFill="WHITE">
             <font>
-                <Font name="System Bold" size="13.0" />
+                <Font name="System Bold" size="13.0"/>
             </font>
         </Button>
-        <Button fx:id="notifications" alignment="CENTER" layoutX="135.0" layoutY="138.0" mnemonicParsing="false" onAction="#goToNotification" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Notifications" textFill="WHITE">
+        <Button fx:id="notifications" alignment="CENTER" layoutX="135.0" layoutY="138.0" mnemonicParsing="false"
+                onAction="#goToNotification" prefHeight="26.0" prefWidth="184.0"
+                style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Notifications" textFill="WHITE">
             <font>
-                <Font name="System Bold" size="13.0" />
+                <Font name="System Bold" size="13.0"/>
             </font>
         </Button>
-        <Button fx:id="pendingTeams" alignment="CENTER" layoutX="135.0" layoutY="186.0" mnemonicParsing="false" onAction="#showPendingTeams" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Pending Teams" textFill="WHITE">
+        <Button fx:id="pendingTeams" alignment="CENTER" layoutX="135.0" layoutY="186.0" mnemonicParsing="false"
+                onAction="#showPendingTeams" prefHeight="26.0" prefWidth="184.0"
+                style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Pending Teams" textFill="WHITE">
             <font>
-                <Font name="System Bold" size="13.0" />
+                <Font name="System Bold" size="13.0"/>
             </font>
         </Button>
-        <Button fx:id="statistic" alignment="CENTER" layoutX="135.0" layoutY="228.0" mnemonicParsing="false" onAction="#showStatistic" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Statistic" textFill="WHITE">
+        <Button fx:id="statistic" alignment="CENTER" layoutX="135.0" layoutY="228.0" mnemonicParsing="false"
+                onAction="#showStatistic" prefHeight="26.0" prefWidth="184.0"
+                style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Statistic" textFill="WHITE">
             <font>
-                <Font name="System Bold" size="13.0" />
+                <Font name="System Bold" size="13.0"/>
             </font>
         </Button>
-      <Button fx:id="logOut" alignment="CENTER" layoutX="135.0" layoutY="273.0" mnemonicParsing="false" onAction="#goToLogInPage" prefHeight="26.0" prefWidth="184.0" style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Log Out" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Button>
+        <Button fx:id="logOut" alignment="CENTER" layoutX="135.0" layoutY="309.0" mnemonicParsing="false"
+                onAction="#goToLogInPage" prefHeight="26.0" prefWidth="184.0"
+                style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Log Out" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Button>
+        <Button fx:id="ChangeInformation" alignment="CENTER" layoutX="135.0" layoutY="268.0" mnemonicParsing="false"
+                onAction="#ChangeInformation" prefHeight="26.0" prefWidth="184.0"
+                style="-fx-background-radius: 20; -fx-background-color: #cc0000;" text="Change user information"
+                textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Button>
     </children>
 </AnchorPane>

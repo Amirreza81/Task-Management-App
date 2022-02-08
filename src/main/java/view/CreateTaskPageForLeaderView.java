@@ -54,6 +54,7 @@ public class CreateTaskPageForLeaderView implements Initializable {
     private void refresh() {
         priorityChoice.getItems().addAll("Lowest", "Low", "High", "Highest");
         priorityChoice.setValue("Lowest");
+        members.getItems().clear();
         for (User member : Controller.controller.getSelectedTeamForTask().getTeamMembers()) {
             members.getItems().add(member.getUserName());
         }

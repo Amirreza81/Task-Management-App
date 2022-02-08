@@ -40,13 +40,12 @@ public class CreateTeamForLeaderView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        refresh();
-        Timeline mainTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-            refresh();
-        }));
-        mainTimeline.setCycleCount(Animation.INDEFINITE);
-        mainTimeline.play();
+        for (User member : Controller.controller.getAllUsers()) {
+            members.getItems().add(member.getUserName());
+        }
+        members.setValue(Controller.controller.getAllUsers().get(0).getUserName());
     }
+
     public void exit(MouseEvent mouseEvent) {
         System.exit(0);
     }
@@ -107,11 +106,4 @@ public class CreateTeamForLeaderView implements Initializable {
     }
 
 
-    private void refresh() {
-        members.getItems().clear();
-        for (User member : Controller.controller.getAllUsers()) {
-            members.getItems().add(member.getUserName());
-        }
-        members.setValue(Controller.controller.getAllUsers().get(0).getUserName());
-    }
 }
