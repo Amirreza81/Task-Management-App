@@ -47,7 +47,7 @@ public class Server {
             try {
                 DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                processCommand(dataInputStream, dataOutputStream , socket);
+                processCommand(dataInputStream, dataOutputStream, socket);
 //                dataInputStream.close();
 //                socket.close();
             } catch (IOException | ParseException e) {
@@ -55,6 +55,7 @@ public class Server {
             }
         }).start();
     }
+
     private static void startThreadForChatSocket(Socket socket, DataOutputStream dataOutputStream, DataInputStream dataInputStream, String token) {
         new Thread(() -> {
             try {
@@ -96,7 +97,8 @@ public class Server {
             }
         }).start();
     }
-    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream,Socket socket)
+
+    private void processCommand(DataInputStream dataInputStream, DataOutputStream dataOutputStream, Socket socket)
             throws IOException, ParseException {
         while (true) {
             String input;
@@ -105,11 +107,10 @@ public class Server {
             } catch (SocketException e) {
                 break;
             }
-            if (input.startsWith("chat")){
-                recognizeChatCommand(input,dataOutputStream,dataInputStream,socket);
+            if (input.startsWith("chat")) {
+                recognizeChatCommand(input, dataOutputStream, dataInputStream, socket);
                 break;
-            }
-            else {
+            } else {
                 String result = recognizeCommand(input);
                 // there should be a way to say that the client is sending non-meaningful commands and close the socket
                 if (result.equals("")) break;
@@ -120,8 +121,8 @@ public class Server {
         }
     }
 
-    private void recognizeChatCommand(String in,DataOutputStream dataOutputStream,
-                                      DataInputStream dataInputStream,Socket socket) throws IOException {
+    private void recognizeChatCommand(String in, DataOutputStream dataOutputStream,
+                                      DataInputStream dataInputStream, Socket socket) throws IOException {
         System.out.println(in);
         if (in.matches("chat_Socket_Read .+")) {
             in = in.replaceFirst("chat_Socket_Read ", "");
@@ -132,8 +133,7 @@ public class Server {
             String token = in.replaceFirst("chat_send_socket ", "");
             startThreadForChatSocket(socket, dataOutputStream, dataInputStream, token);
             dataOutputStream.writeUTF("success " + LoggedController.instance.keySet().size());
-        }
-        else if (in.matches("chat_online_member_counter .+")) {
+        } else if (in.matches("chat_online_member_counter .+")) {
             in = in.replaceFirst("chat_online_member_counter ", "");
             LoggedController.getOnlineCounter().put(in, dataOutputStream);
         }
@@ -156,7 +156,7 @@ public class Server {
             return recognizeTaskCommand(input);
         } else if (input.startsWith("team")) {
             return recognizeTeamCommand(input);
-        } else if (input.startsWith("invite")){
+        } else if (input.startsWith("invite")) {
             return recognizeInviteCommand(input);
         }
 
@@ -422,6 +422,9 @@ public class Server {
             return "" + response;
         } else if ((matcher = Controller.controller.getCommandMatcher("admin remove user --user ([^ ]+) --token (.*)", input)).matches()) {
             int response = Controller.controller.removeUser(matcher.group(1));
+            return "" + response;
+        } else if ((matcher = Controller.controller.getCommandMatcher("admin --changeEmail --username %s --email ([^ ]+) --token (.*)", input)).matches()) {
+            int response = Controller.controller.changeEmail(User.getUserByUsername(matcher.group(1)), matcher.group(2));
             return "" + response;
         } else if ((matcher = Controller.controller.getCommandMatcher("admin --hidden --username ([^ ]+)", input)).matches()) {
             int response = Controller.controller.hiddenUser(matcher.group(1));

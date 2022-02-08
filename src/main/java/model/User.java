@@ -62,6 +62,10 @@ public class User {
         User.users = users;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public int getScore() {
         return score;
     }
