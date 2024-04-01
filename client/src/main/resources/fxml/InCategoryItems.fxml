@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+
+
+<Button fx:id="btnSelect" mnemonicParsing="false" onAction="#goToNextCategory" prefHeight="26.0" prefWidth="95.0" style="-fx-background-color: #49BEF5; -fx-background-radius: 1em;" text="Button" textAlignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BoardMenu.InCategoryItemsView" />
